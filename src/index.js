@@ -27,20 +27,21 @@ class LevelDatastore {
     this.db = levelup(path, Object.assign({}, {
       compression: false // same default as go
     }, opts, {
+      keyEncoding: 'binary',
       valueEncoding: 'binary'
     }))
   }
 
   put (key /* : Key */, value /* : Buffer */, callback /* : Callback<void> */) /* : void */ {
-    this.db.put(key.toString(), value, callback)
+    this.db.put(key.toBuffer(), value, callback)
   }
 
   get (key /* : Key */, callback /* : Callback<Buffer> */) /* : void */ {
-    this.db.get(key.toString(), callback)
+    this.db.get(key.toBuffer(), callback)
   }
 
   has (key /* : Key */, callback /* : Callback<bool> */) /* : void */ {
-    this.db.get(key.toString(), (err, res) => {
+    this.db.get(key.toBuffer(), (err, res) => {
       if (err) {
         if (err.notFound) {
           callback(null, false)
@@ -55,7 +56,7 @@ class LevelDatastore {
   }
 
   delete (key /* : Key */, callback /* : Callback<void> */) /* : void */ {
-    this.db.del(key.toString(), callback)
+    this.db.del(key.toBuffer(), callback)
   }
 
   close (callback /* : Callback<void> */) /* : void */ {
@@ -68,14 +69,14 @@ class LevelDatastore {
       put: (key /* : Key */, value /* : Buffer */) /* : void */ => {
         ops.push({
           type: 'put',
-          key: key.toString(),
+          key: key.toBuffer(),
           value: value
         })
       },
       delete: (key /* : Key */) /* : void */ => {
         ops.push({
           type: 'del',
-          key: key.toString()
+          key: key.toBuffer()
         })
       },
       commit: (callback /* : Callback<void> */) /* : void */ => {
@@ -93,7 +94,7 @@ class LevelDatastore {
     const iter = this.db.db.iterator({
       keys: true,
       values: values,
-      keyAsBuffer: false
+      keyAsBuffer: true
     })
 
     const rawStream = (end, cb) => {
@@ -115,7 +116,7 @@ class LevelDatastore {
         }
 
         const res /* : QueryEntry<Buffer> */ = {
-          key: new Key(key)
+          key: new Key(key, false)
         }
 
         if (values) {

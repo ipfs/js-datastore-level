@@ -1,5 +1,3 @@
-=============== Aug 16, 2016 (CEST) ===============
-12:27:26.257958 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-12:27:26.258463 db@open opening
-12:27:26.260891 db@janitor F·4 G·0
-12:27:26.260933 db@open done T·2.438178ms
+2017/03/13-13:52:56.574311 70000f009000 Recovering log #35
+2017/03/13-13:52:56.575960 70000f009000 Delete type=0 #35
+2017/03/13-13:52:56.576081 70000f009000 Delete type=3 #34

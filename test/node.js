@@ -2,11 +2,15 @@
 /* eslint-env mocha */
 'use strict'
 
+const pull = require('pull-stream')
+const path = require('path')
 const utils = require('interface-datastore').utils
 const rimraf = require('rimraf')
 const each = require('async/each')
 const MountStore = require('interface-datastore').MountDatastore
 const Key = require('interface-datastore').Key
+const expect = require('chai').expect
+const CID = require('cids')
 
 const LevelStore = require('../src')
 
@@ -48,6 +52,18 @@ describe('LevelDatastore', () => {
     })
   })
 
-  it('interop with go', () => {
+  it('interop with go', (done) => {
+    const store = new LevelStore(path.join(__dirname, 'test-repo', 'datastore'))
+
+    pull(
+      store.query({}),
+      pull.map((e) => new CID(e.key.toBuffer())),
+      pull.collect((err, cids) => {
+        expect(err).to.not.exist
+        expect(cids[0].version).to.be.eql(0)
+        expect(cids).to.have.length(4)
+        done()
+      })
+    )
   })
 })
