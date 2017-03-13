@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ipfs/js-datastore-leveldb.git"
+    "url": "git+https://github.com/ipfs/js-datastore-level.git"
   },
   "keywords": [
     "interface",
@@ -32,9 +32,9 @@
   "author": "Friedel Ziegelmayer<dignifiedquire@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ipfs/js-datastore-leveldb/issues"
+    "url": "https://github.com/ipfs/js-datastore-level/issues"
   },
-  "homepage": "https://github.com/ipfs/js-datastore-leveldb#readme",
+  "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
     "level-js": "^2.2.4",
     "leveldown": "^1.6.0",
