@@ -52,5 +52,8 @@
     "flow-bin": "^0.41.0",
     "memdown": "^1.2.4",
     "rimraf": "^2.6.1"
-  }
+  },
+  "contributors": [
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>"
+  ]
 }
