@@ -3,7 +3,7 @@
 'use strict'
 
 const each = require('async/each')
-const MountStore = require('interface-datastore').MountDatastore
+const MountStore = require('datastore-core').MountDatastore
 const Key = require('interface-datastore').Key
 const leveljs = require('level-js')
 
@@ -11,7 +11,7 @@ const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
-    require('interface-datastore/test/interface')({
+    require('interface-datastore/src/tests')({
       setup (callback) {
         callback(null, new LevelStore('hello', {db: leveljs}))
       },
@@ -22,7 +22,7 @@ describe('LevelDatastore', () => {
   })
 
   describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
-    require('interface-datastore/test/interface')({
+    require('interface-datastore/src/tests')({
       setup (callback) {
         callback(null, new MountStore([{
           prefix: new Key('/a'),

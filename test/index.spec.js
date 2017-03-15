@@ -8,7 +8,7 @@ const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (memdown)', () => {
-    require('interface-datastore/test/interface')({
+    require('interface-datastore/src/tests')({
       setup (callback) {
         callback(null, new LevelStore('hello', {db: memdown}))
       },

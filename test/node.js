@@ -7,7 +7,7 @@ const path = require('path')
 const utils = require('interface-datastore').utils
 const rimraf = require('rimraf')
 const each = require('async/each')
-const MountStore = require('interface-datastore').MountDatastore
+const MountStore = require('datastore-core').MountDatastore
 const Key = require('interface-datastore').Key
 const expect = require('chai').expect
 const CID = require('cids')
@@ -17,7 +17,7 @@ const LevelStore = require('../src')
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
     const dir = utils.tmpdir()
-    require('interface-datastore/test/interface')({
+    require('interface-datastore/src/tests')({
       setup (callback) {
         callback(null, new LevelStore(dir))
       },
@@ -33,7 +33,7 @@ describe('LevelDatastore', () => {
       utils.tmpdir(),
       utils.tmpdir()
     ]
-    require('interface-datastore/test/interface')({
+    require('interface-datastore/src/tests')({
       setup (callback) {
         callback(null, new MountStore([{
           prefix: new Key('/a'),

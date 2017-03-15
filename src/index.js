@@ -27,21 +27,20 @@ class LevelDatastore {
     this.db = levelup(path, Object.assign({}, {
       compression: false // same default as go
     }, opts, {
-      keyEncoding: 'binary',
       valueEncoding: 'binary'
     }))
   }
 
   put (key /* : Key */, value /* : Buffer */, callback /* : Callback<void> */) /* : void */ {
-    this.db.put(key.toBuffer(), value, callback)
+    this.db.put(key.toString(), value, callback)
   }
 
   get (key /* : Key */, callback /* : Callback<Buffer> */) /* : void */ {
-    this.db.get(key.toBuffer(), callback)
+    this.db.get(key.toString(), callback)
   }
 
   has (key /* : Key */, callback /* : Callback<bool> */) /* : void */ {
-    this.db.get(key.toBuffer(), (err, res) => {
+    this.db.get(key.toString(), (err, res) => {
       if (err) {
         if (err.notFound) {
           callback(null, false)
@@ -56,7 +55,7 @@ class LevelDatastore {
   }
 
   delete (key /* : Key */, callback /* : Callback<void> */) /* : void */ {
-    this.db.del(key.toBuffer(), callback)
+    this.db.del(key.toString(), callback)
   }
 
   close (callback /* : Callback<void> */) /* : void */ {
@@ -69,14 +68,14 @@ class LevelDatastore {
       put: (key /* : Key */, value /* : Buffer */) /* : void */ => {
         ops.push({
           type: 'put',
-          key: key.toBuffer(),
+          key: key.toString(),
           value: value
         })
       },
       delete: (key /* : Key */) /* : void */ => {
         ops.push({
           type: 'del',
-          key: key.toBuffer()
+          key: key.toString()
         })
       },
       commit: (callback /* : Callback<void> */) /* : void */ => {
