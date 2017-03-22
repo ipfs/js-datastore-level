@@ -45,11 +45,12 @@
     "pull-stream": "^3.5.0"
   },
   "devDependencies": {
-    "aegir": "^10.0.0",
+    "aegir": "^11.0.1",
     "async": "^2.1.5",
     "chai": "^3.5.0",
-    "cids": "^0.4.1",
-    "flow-bin": "^0.41.0",
+    "cids": "^0.4.2",
+    "dirty-chai": "^1.2.2",
+    "flow-bin": "^0.42.0",
     "memdown": "^1.2.4",
     "rimraf": "^2.6.1"
   },
