@@ -31,6 +31,10 @@ class LevelDatastore {
     }))
   }
 
+  open (callback /* : Callback<void> */) /* : void */ {
+    this.db.open(callback)
+  }
+
   put (key /* : Key */, value /* : Buffer */, callback /* : Callback<void> */) /* : void */ {
     this.db.put(key.toString(), value, callback)
   }

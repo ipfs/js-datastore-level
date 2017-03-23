@@ -2,6 +2,9 @@
 /* eslint-env mocha */
 'use strict'
 
+const chai = require('chai')
+chai.use(require('dirty-chai'))
+const expect = chai.expect
 const pull = require('pull-stream')
 const path = require('path')
 const utils = require('interface-datastore').utils
@@ -9,7 +12,6 @@ const rimraf = require('rimraf')
 const each = require('async/each')
 const MountStore = require('datastore-core').MountDatastore
 const Key = require('interface-datastore').Key
-const expect = require('chai').expect
 const CID = require('cids')
 
 const LevelStore = require('../src')
@@ -59,7 +61,7 @@ describe('LevelDatastore', () => {
       store.query({}),
       pull.map((e) => new CID(e.key.toBuffer())),
       pull.collect((err, cids) => {
-        expect(err).to.not.exist
+        expect(err).to.not.exist()
         expect(cids[0].version).to.be.eql(0)
         expect(cids).to.have.length(4)
         done()
