@@ -1,6 +1,7 @@
 **/node_modules/
 **/*.log
 test/repo-tests*
+test/test-repo/datastore/*
 
 # Logs
 logs
