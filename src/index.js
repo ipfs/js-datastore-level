@@ -24,9 +24,8 @@ class LevelDatastore {
   /* :: db: levelup */
 
   constructor (path /* : string */, opts /* : ?LevelOptions */) {
-    this.db = levelup(path, Object.assign({}, {
-      compression: false // same default as go
-    }, opts, {
+    this.db = levelup(path, Object.assign(opts, {
+      compression: false, // same default as go
       valueEncoding: 'binary'
     }))
   }

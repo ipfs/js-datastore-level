@@ -41,7 +41,7 @@
     "interface-datastore": "^0.2.1",
     "level-js": "^2.2.4",
     "leveldown": "^1.7.0",
-    "levelup": "^1.3.6",
+    "levelup": "^1.3.7",
     "pull-stream": "^3.6.0"
   },
   "devDependencies": {
