@@ -1,3 +1,13 @@
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/ipfs/js-datastore-level/compare/v0.4.0...v0.4.1) (2017-05-24)
+
+
+### Bug Fixes
+
+* Object.assign is now evil and no longer is behaving as spec says when Webpacked ([077bbc1](https://github.com/ipfs/js-datastore-level/commit/077bbc1))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ipfs/js-datastore-level/compare/v0.3.0...v0.4.0) (2017-05-23)
 
