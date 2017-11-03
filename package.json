@@ -37,8 +37,8 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "^0.3.0",
-    "interface-datastore": "^0.3.0",
+    "datastore-core": "github:ipfs/js-datastore-core#windows-interop",
+    "interface-datastore": "^0.4.0",
     "level-js": "^2.2.4",
     "leveldown": "^1.7.2",
     "levelup": "^1.3.8",
