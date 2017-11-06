@@ -61,11 +61,9 @@ describe('LevelDatastore', () => {
     pull(
       store.query({}),
       pull.map((e) => {
-/*
-        console.log('=======')
-        console.log(e)
-        console.log(e.key.toBuffer().toString())
-*/
+        // console.log('=======')
+        // console.log(e)
+        // console.log(e.key.toBuffer().toString())
         return new CID(1, 'dag-cbor', e.key.toBuffer())
       }),
       pull.collect((err, cids) => {
