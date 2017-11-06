@@ -122,7 +122,7 @@ class LevelDatastore {
         }
 
         if (values) {
-          res.value = new Buffer(value)
+          res.value = Buffer.from(value)
         }
 
         cb(null, res)
