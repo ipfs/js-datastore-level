@@ -1,3 +1,13 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ipfs/js-datastore-level/compare/v0.6.0...v0.7.0) (2017-11-06)
+
+
+### Bug Fixes
+
+* Windows interop ([#4](https://github.com/ipfs/js-datastore-level/issues/4)) ([5d67042](https://github.com/ipfs/js-datastore-level/commit/5d67042))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/ipfs/js-datastore-level/compare/v0.5.0...v0.6.0) (2017-07-23)
 
