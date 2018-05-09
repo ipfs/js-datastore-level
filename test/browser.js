@@ -5,7 +5,9 @@
 const each = require('async/each')
 const MountStore = require('datastore-core').MountDatastore
 const Key = require('interface-datastore').Key
-const leveljs = require('level-js')
+
+// leveldown will be swapped for level-js
+const leveljs = require('leveldown')
 
 const LevelStore = require('../src')
 

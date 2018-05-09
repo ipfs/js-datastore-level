@@ -24,10 +24,24 @@ class LevelDatastore {
   /* :: db: levelup */
 
   constructor (path /* : string */, opts /* : ?LevelOptions */) {
-    this.db = levelup(path, Object.assign({}, opts, {
-      compression: false, // same default as go
-      valueEncoding: 'binary'
-    }))
+    // Default to leveldown db
+    const database = opts && opts.db ? opts.db : require('leveldown')
+    delete opts.db
+
+    this.db = levelup(
+      database(
+        path,
+        Object.assign({}, opts, {
+          compression: false, // same default as go
+          valueEncoding: 'binary'
+        })
+      ), (err) => {
+        // Prevent an uncaught exception error on duplicate locks
+        if (err) {
+          throw err
+        }
+      }
+    )
   }
 
   open (callback /* : Callback<void> */) /* : void */ {
@@ -58,7 +72,10 @@ class LevelDatastore {
   }
 
   delete (key /* : Key */, callback /* : Callback<void> */) /* : void */ {
-    this.db.del(key.toString(), callback)
+    this.db.del(key.toString(), (err) => {
+      // Avoid level passing additional arguments to callback, we dont need them
+      callback(err)
+    })
   }
 
   close (callback /* : Callback<void> */) /* : void */ {
