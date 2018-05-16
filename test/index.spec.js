@@ -7,6 +7,7 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 const memdown = require('memdown')
 const LevelDown = require('leveldown')
+const eachSeries = require('async/eachSeries')
 
 const LevelStore = require('../src')
 
@@ -45,15 +46,22 @@ describe('LevelDatastore', () => {
     })
   })
 
-  describe('interface-datastore (memdown)', () => {
-    require('interface-datastore/src/tests')({
-      setup (callback) {
-        callback(null, new LevelStore('hello', {db: memdown}))
-      },
-      teardown (callback) {
-        memdown.clearGlobalStore()
-        callback()
-      }
+  eachSeries([
+    memdown,
+    LevelDown
+  ], (database) => {
+    describe(`interface-datastore ${database.name}`, () => {
+      require('interface-datastore/src/tests')({
+        setup (callback) {
+          callback(null, new LevelStore('datastore-test', {db: database}))
+        },
+        teardown (callback) {
+          memdown.clearGlobalStore()
+          callback()
+        }
+      })
     })
+  }, (err) => {
+    expect(err).to.not.exist()
   })
 })
