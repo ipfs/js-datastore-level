@@ -24,18 +24,23 @@ class LevelDatastore {
   /* :: db: levelup */
 
   constructor (path /* : string */, opts /* : ?LevelOptions */) {
-    // Default to leveldown db
-    const database = opts && opts.db ? opts.db : require('leveldown')
-    delete opts.db
+    let database
+
+    if (opts && opts.db) {
+      database = opts.db
+      delete opts.db
+    } else {
+      // Default to leveldown db
+      database = require('leveldown')
+    }
 
     this.db = levelup(
-      database(
-        path,
-        Object.assign({}, opts, {
-          compression: false, // same default as go
-          valueEncoding: 'binary'
-        })
-      ), (err) => {
+      database(path),
+      Object.assign({}, opts, {
+        compression: false, // same default as go
+        valueEncoding: 'binary'
+      }),
+      (err) => {
         // Prevent an uncaught exception error on duplicate locks
         if (err) {
           throw err
