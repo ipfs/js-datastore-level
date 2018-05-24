@@ -16,6 +16,7 @@
 
 - [Install](#install)
 - [Usage](#usage)
+  - [Browser Shimming Leveldown](#browser-shimming-leveldown)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -38,6 +39,9 @@ const browserStore = new LevelStore('my/db/name', {db: require('level-js')})
 // another leveldown compliant backend like memdown
 const memStore = new LevelStore('my/mem/store', {db: require('memdown')})
 ```
+
+### Browser Shimming Leveldown
+As `leveldown` does not work in the browser, `LevelStore` takes advantage of the browser property in package.json to shim `level-js` in its place. Most modern bundlers such as webpack, will see the shim and replace it for use in the browser. If you are using a bundler that does not support pkg.browser, you will need to handle the shimming yourself, as was the case with versions of `LevelStore` 0.7.0 and earlier.
 
 ## Contribute
 
