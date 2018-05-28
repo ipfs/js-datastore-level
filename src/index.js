@@ -9,6 +9,7 @@ const levelup = require('levelup')
 const asyncFilter = require('interface-datastore').utils.asyncFilter
 const asyncSort = require('interface-datastore').utils.asyncSort
 const Key = require('interface-datastore').Key
+const encode = require('encoding-down')
 
 /**
  * A datastore backed by leveldb.
@@ -35,10 +36,9 @@ class LevelDatastore {
     }
 
     this.db = levelup(
-      database(path),
+      encode(database(path), { valueEncoding: 'binary' }),
       Object.assign({}, opts, {
-        compression: false, // same default as go
-        valueEncoding: 'binary'
+        compression: false // same default as go
       }),
       (err) => {
         // Prevent an uncaught exception error on duplicate locks
