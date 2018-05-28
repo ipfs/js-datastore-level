@@ -41,6 +41,7 @@
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
     "datastore-core": "~0.4.0",
+    "encoding-down": "^5.0.2",
     "interface-datastore": "~0.4.1",
     "level-js": "github:timkuijsten/level.js#idbunwrapper",
     "leveldown": "^3.0.2",

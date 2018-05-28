@@ -18,10 +18,13 @@ describe('LevelDatastore', () => {
 
       levelStore.open((err) => {
         expect(err).to.not.exist()
-        expect(levelStore.db.db instanceof LevelDown).to.equal(true)
+        expect(levelStore.db.db.db instanceof LevelDown).to.equal(true)
         expect(levelStore.db.options).to.include({
           createIfMissing: true,
           errorIfExists: false
+        })
+        expect(levelStore.db.db.codec.opts).to.include({
+          valueEncoding: 'binary'
         })
         done()
       })
@@ -36,7 +39,7 @@ describe('LevelDatastore', () => {
 
       levelStore.open((err) => {
         expect(err).to.not.exist()
-        expect(levelStore.db.db instanceof memdown).to.equal(true)
+        expect(levelStore.db.db.db instanceof memdown).to.equal(true)
         expect(levelStore.db.options).to.include({
           createIfMissing: true,
           errorIfExists: true
