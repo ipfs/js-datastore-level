@@ -1,3 +1,15 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ipfs/js-datastore-level/compare/v0.7.0...v0.8.0) (2018-05-29)
+
+
+### Bug Fixes
+
+* add test and fix constructor ([396f657](https://github.com/ipfs/js-datastore-level/commit/396f657))
+* update binary encoding for levelup 2 ([a5d7378](https://github.com/ipfs/js-datastore-level/commit/a5d7378))
+* upgrade level libs to resolve node 10 failure ([a427eca](https://github.com/ipfs/js-datastore-level/commit/a427eca))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/ipfs/js-datastore-level/compare/v0.6.0...v0.7.0) (2017-11-06)
 

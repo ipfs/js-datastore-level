@@ -1,6 +1,6 @@
 {
   "name": "datastore-level",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Datastore implementation with level(up|down) backend",
   "main": "src/index.js",
   "browser": {
