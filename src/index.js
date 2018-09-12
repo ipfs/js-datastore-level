@@ -9,6 +9,7 @@ const levelup = require('levelup')
 const asyncFilter = require('interface-datastore').utils.asyncFilter
 const asyncSort = require('interface-datastore').utils.asyncSort
 const Key = require('interface-datastore').Key
+const Errors = require('interface-datastore').Errors
 const encode = require('encoding-down')
 
 /**
@@ -50,15 +51,30 @@ class LevelDatastore {
   }
 
   open (callback /* : Callback<void> */) /* : void */ {
-    this.db.open(callback)
+    this.db.open((err) => {
+      if (err) {
+        return callback(Errors.dbOpenFailedError(err))
+      }
+      callback()
+    })
   }
 
   put (key /* : Key */, value /* : Buffer */, callback /* : Callback<void> */) /* : void */ {
-    this.db.put(key.toString(), value, callback)
+    this.db.put(key.toString(), value, (err) => {
+      if (err) {
+        return callback(Errors.dbWriteFailedError(err))
+      }
+      callback()
+    })
   }
 
   get (key /* : Key */, callback /* : Callback<Buffer> */) /* : void */ {
-    this.db.get(key.toString(), callback)
+    this.db.get(key.toString(), (err, data) => {
+      if (err) {
+        return callback(Errors.notFoundError(err))
+      }
+      callback(null, data)
+    })
   }
 
   has (key /* : Key */, callback /* : Callback<bool> */) /* : void */ {
@@ -78,8 +94,10 @@ class LevelDatastore {
 
   delete (key /* : Key */, callback /* : Callback<void> */) /* : void */ {
     this.db.del(key.toString(), (err) => {
-      // Avoid level passing additional arguments to callback, we dont need them
-      callback(err)
+      if (err) {
+        return callback(Errors.dbDeleteFailedError(err))
+      }
+      callback()
     })
   }
 
