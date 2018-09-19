@@ -1,3 +1,13 @@
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/ipfs/js-datastore-level/compare/v0.8.0...v0.9.0) (2018-09-19)
+
+
+### Features
+
+* add basic error codes ([02a5146](https://github.com/ipfs/js-datastore-level/commit/02a5146))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/ipfs/js-datastore-level/compare/v0.7.0...v0.8.0) (2018-05-29)
 
