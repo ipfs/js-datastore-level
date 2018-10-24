@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "~0.5.0",
+    "datastore-core": "~0.6.0",
     "encoding-down": "^5.0.4",
     "interface-datastore": "~0.6.0",
     "level-js": "github:timkuijsten/level.js#idbunwrapper",
@@ -49,10 +49,10 @@
     "pull-stream": "^3.6.9"
   },
   "devDependencies": {
-    "aegir": "^15.3.0",
+    "aegir": "^15.3.1",
     "async": "^2.6.1",
-    "chai": "^4.1.2",
-    "cids": "~0.5.3",
+    "chai": "^4.2.0",
+    "cids": "~0.5.5",
     "dirty-chai": "^2.0.1",
     "flow-bin": "~0.81.0",
     "memdown": "^1.4.1",
