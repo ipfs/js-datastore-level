@@ -1,6 +1,6 @@
 {
   "name": "datastore-level",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Datastore implementation with level(up|down) backend",
   "main": "src/index.js",
   "browser": {
@@ -63,6 +63,7 @@
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Jacob Heun <jacobheun@gmail.com>",
     "Richard Schneider <makaretu@gmail.com>",
+    "Vasco Santos <vasco.santos@moxy.studio>",
     "Victor Bjelkholm <victorbjelkholm@gmail.com>"
   ]
 }
