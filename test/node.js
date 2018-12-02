@@ -5,14 +5,12 @@
 const chai = require('chai')
 chai.use(require('dirty-chai'))
 const expect = chai.expect
-const pull = require('pull-stream')
 const path = require('path')
-const utils = require('interface-datastore').utils
+const { Key, utils } = require('interface-datastore')
 const rimraf = require('rimraf')
-const each = require('async/each')
-const MountStore = require('datastore-core').MountDatastore
-const Key = require('interface-datastore').Key
+const { MountDatastore } = require('datastore-core')
 const CID = require('cids')
+const { promisify } = require('util')
 
 const LevelStore = require('../src')
 
@@ -20,18 +18,13 @@ describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
     const dir = utils.tmpdir()
     require('interface-datastore/src/tests')({
-      setup (callback) {
-        callback(null, new LevelStore(dir, {
-          db: require('leveldown')
-        }))
-      },
-      teardown (callback) {
-        rimraf(dir, callback)
-      }
+      setup: () => new LevelStore(dir, { db: require('leveldown') }),
+      teardown: () => promisify(rimraf)(dir)
     })
   })
 
-  describe('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
+  // TODO: unskip when datastore-core is converted to async/await/iterators
+  describe.skip('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
     const dirs = [
       utils.tmpdir(),
       utils.tmpdir(),
@@ -39,8 +32,8 @@ describe('LevelDatastore', () => {
     ]
 
     require('interface-datastore/src/tests')({
-      setup (callback) {
-        callback(null, new MountStore([{
+      setup () {
+        return new MountDatastore([{
           prefix: new Key('/a'),
           datastore: new LevelStore(dirs[0], {
             db: require('leveldown')
@@ -55,33 +48,26 @@ describe('LevelDatastore', () => {
           datastore: new LevelStore(dirs[2], {
             db: require('leveldown')
           })
-        }]))
+        }])
       },
-      teardown (callback) {
-        each(dirs, rimraf, callback)
+      teardown () {
+        return Promise.all(dirs.map(dir => promisify(rimraf)(dir)))
       }
     })
   })
 
-  it.skip('interop with go', (done) => {
+  it.skip('interop with go', async () => {
     const store = new LevelStore(path.join(__dirname, 'test-repo', 'datastore'), {
       db: require('leveldown')
     })
 
-    pull(
-      store.query({}),
-      pull.map((e) => {
-        // console.log('=======')
-        // console.log(e)
-        // console.log(e.key.toBuffer().toString())
-        return new CID(1, 'dag-cbor', e.key.toBuffer())
-      }),
-      pull.collect((err, cids) => {
-        expect(err).to.not.exist()
-        expect(cids[0].version).to.be.eql(0)
-        expect(cids).to.have.length(4)
-        done()
-      })
-    )
+    let cids = []
+
+    for await (const e of store.query({})) {
+      cids.push(new CID(1, 'dag-cbor', e.key.toBuffer()))
+    }
+
+    expect(cids[0].version).to.be.eql(0)
+    expect(cids).to.have.length(4)
   })
 })
