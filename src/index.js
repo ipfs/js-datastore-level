@@ -6,7 +6,6 @@
 const levelup = require('levelup')
 const { Key, Errors, utils } = require('interface-datastore')
 const encode = require('encoding-down')
-const { promisify } = require('util')
 
 const { filter, map, take, sortAll } = utils
 
