@@ -2,6 +2,7 @@
   "name": "datastore-level",
   "version": "0.10.0",
   "description": "Datastore implementation with level(up|down) backend",
+  "leadMaintainer": "Pedro Teixeira <pedro@protocol.ai>",
   "main": "src/index.js",
   "browser": {
     "leveldown": "level-js"
