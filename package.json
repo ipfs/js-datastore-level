@@ -44,7 +44,7 @@
     "datastore-core": "~0.6.0",
     "encoding-down": "^6.0.2",
     "interface-datastore": "~0.6.0",
-    "level-js": "github:timkuijsten/level.js#idbunwrapper",
+    "level-js": "^4.0.1",
     "leveldown": "^5.0.0",
     "levelup": "^4.0.1",
     "pull-stream": "^3.6.9"
