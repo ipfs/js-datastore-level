@@ -2,9 +2,8 @@
 /* eslint-env mocha */
 'use strict'
 
-const each = require('async/each')
-const MountStore = require('datastore-core').MountDatastore
-const Key = require('interface-datastore').Key
+const { MountDatastore } = require('datastore-core')
+const { Key } = require('interface-datastore')
 
 // leveldown will be swapped for level-js
 const leveljs = require('leveldown')
@@ -14,31 +13,39 @@ const LevelStore = require('../src')
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
     require('interface-datastore/src/tests')({
-      setup (callback) {
-        callback(null, new LevelStore('hello', {db: leveljs}))
-      },
-      teardown (callback) {
-        leveljs.destroy('hello', callback)
-      }
+      setup: () => new LevelStore('hello', { db: leveljs }),
+      teardown: () => new Promise((resolve, reject) => {
+        leveljs.destroy('hello', err => {
+          if (err) return reject(err)
+          resolve()
+        })
+      })
     })
   })
 
   describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
     require('interface-datastore/src/tests')({
-      setup (callback) {
-        callback(null, new MountStore([{
+      setup () {
+        return new MountDatastore([{
           prefix: new Key('/a'),
-          datastore: new LevelStore('one', {db: leveljs})
+          datastore: new LevelStore('one', { db: leveljs })
         }, {
           prefix: new Key('/q'),
-          datastore: new LevelStore('two', {db: leveljs})
+          datastore: new LevelStore('two', { db: leveljs })
         }, {
           prefix: new Key('/z'),
-          datastore: new LevelStore('three', {db: leveljs})
-        }]))
+          datastore: new LevelStore('three', { db: leveljs })
+        }])
       },
-      teardown (callback) {
-        each(['one', 'two', 'three'], leveljs.destroy.bind(leveljs), callback)
+      teardown () {
+        return Promise.all(['one', 'two', 'three'].map(dir => {
+          return new Promise((resolve, reject) => {
+            leveljs.destroy(dir, err => {
+              if (err) return reject(err)
+              resolve()
+            })
+          })
+        }))
       }
     })
   })
