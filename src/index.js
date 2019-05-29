@@ -1,7 +1,4 @@
-/* @flow */
 'use strict'
-
-/* :: import type {Callback, Batch, Query, QueryResult, QueryEntry} from 'interface-datastore' */
 
 const levelup = require('levelup')
 const { Key, Errors, utils } = require('interface-datastore')
@@ -12,17 +9,8 @@ const { filter, map, take, sortAll } = utils
 /**
  * A datastore backed by leveldb.
  */
-/* :: export type LevelOptions = {
-  createIfMissing?: bool,
-  errorIfExists?: bool,
-  compression?: bool,
-  cacheSize?: number,
-  db?: Object
-} */
 class LevelDatastore {
-  /* :: db: levelup */
-
-  constructor (path /* : string */, opts /* : ?LevelOptions */) {
+  constructor (path, opts) {
     let database
 
     if (opts && opts.db) {
@@ -47,7 +35,7 @@ class LevelDatastore {
     )
   }
 
-  async open () /* : Promise */ {
+  async open () {
     try {
       await this.db.open()
     } catch (err) {
@@ -55,7 +43,7 @@ class LevelDatastore {
     }
   }
 
-  async put (key /* : Key */, value /* : Buffer */) /* : Promise */ {
+  async put (key, value) {
     try {
       await this.db.put(key.toString(), value)
     } catch (err) {
@@ -63,7 +51,7 @@ class LevelDatastore {
     }
   }
 
-  async get (key /* : Key */) /* : Promise */ {
+  async get (key) {
     let data
     try {
       data = await this.db.get(key.toString())
@@ -74,7 +62,7 @@ class LevelDatastore {
     return data
   }
 
-  async has (key /* : Key */) /* : Promise<Boolean> */ {
+  async has (key) {
     try {
       await this.db.get(key.toString())
     } catch (err) {
@@ -84,7 +72,7 @@ class LevelDatastore {
     return true
   }
 
-  async delete (key /* : Key */) /* : Promise */ {
+  async delete (key) {
     try {
       await this.db.del(key.toString())
     } catch (err) {
@@ -92,33 +80,33 @@ class LevelDatastore {
     }
   }
 
-  close () /* : Promise */ {
+  close () {
     return this.db.close()
   }
 
-  batch () /* : Batch<Buffer> */ {
+  batch () {
     const ops = []
     return {
-      put: (key /* : Key */, value /* : Buffer */) /* : void */ => {
+      put: (key, value) => {
         ops.push({
           type: 'put',
           key: key.toString(),
           value: value
         })
       },
-      delete: (key /* : Key */) /* : void */ => {
+      delete: (key) => {
         ops.push({
           type: 'del',
           key: key.toString()
         })
       },
-      commit: () /* : Promise */ => {
+      commit: () => {
         return this.db.batch(ops)
       }
     }
   }
 
-  query (q /* : Query<Buffer> */) /* : QueryResult<Buffer> */ {
+  query (q) {
     let values = true
     if (q.keysOnly != null) {
       values = !q.keysOnly
@@ -133,7 +121,7 @@ class LevelDatastore {
     )
 
     it = map(it, ({ key, value }) => {
-      const res /* : QueryEntry<Buffer> */ = { key: new Key(key, false) }
+      const res = { key: new Key(key, false) }
       if (values) {
         res.value = Buffer.from(value)
       }
