@@ -23,8 +23,7 @@ describe('LevelDatastore', () => {
     })
   })
 
-  // TODO: unskip when datastore-core is converted to async/await/iterators
-  describe.skip('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
+  describe('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
     const dirs = [
       utils.tmpdir(),
       utils.tmpdir(),

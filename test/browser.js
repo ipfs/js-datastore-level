@@ -23,8 +23,7 @@ describe('LevelDatastore', () => {
     })
   })
 
-  // TODO: unskip when datastore-core is converted to async/await/iterators
-  describe.skip('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
+  describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
     require('interface-datastore/src/tests')({
       setup () {
         return new MountDatastore([{
