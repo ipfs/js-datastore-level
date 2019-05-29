@@ -47,9 +47,7 @@ describe('LevelDatastore', () => {
     describe(`interface-datastore ${database.name}`, () => {
       require('interface-datastore/src/tests')({
         setup: () => new LevelStore(`${os.tmpdir()}/datastore-level-test-${Math.random()}`, { db: database }),
-        teardown () {
-          memdown.clearGlobalStore()
-        }
+        teardown () {}
       })
     })
   })
