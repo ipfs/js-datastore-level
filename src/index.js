@@ -92,7 +92,7 @@ class LevelDatastore {
     }
   }
 
-  async close () /* : Promise */ {
+  close () /* : Promise */ {
     return this.db.close()
   }
 
@@ -112,7 +112,7 @@ class LevelDatastore {
           key: key.toString()
         })
       },
-      commit: async () /* : Promise */ => {
+      commit: () /* : Promise */ => {
         return this.db.batch(ops)
       }
     }
