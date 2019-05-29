@@ -7,64 +7,48 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 const memdown = require('memdown')
 const LevelDown = require('leveldown')
-const eachSeries = require('async/eachSeries')
-
+const os = require('os')
 const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
   describe('initialization', () => {
-    it('should default to a leveldown database', (done) => {
+    it('should default to a leveldown database', async () => {
       const levelStore = new LevelStore('init-default')
+      await levelStore.open()
 
-      levelStore.open((err) => {
-        expect(err).to.not.exist()
-        expect(levelStore.db.db.db instanceof LevelDown).to.equal(true)
-        expect(levelStore.db.options).to.include({
-          createIfMissing: true,
-          errorIfExists: false
-        })
-        expect(levelStore.db.db.codec.opts).to.include({
-          valueEncoding: 'binary'
-        })
-        done()
+      expect(levelStore.db.db.db instanceof LevelDown).to.equal(true)
+      expect(levelStore.db.options).to.include({
+        createIfMissing: true,
+        errorIfExists: false
+      })
+      expect(levelStore.db.db.codec.opts).to.include({
+        valueEncoding: 'binary'
       })
     })
 
-    it('should be able to override the database', (done) => {
+    it('should be able to override the database', async () => {
       const levelStore = new LevelStore('init-default', {
         db: memdown,
         createIfMissing: true,
         errorIfExists: true
       })
 
-      levelStore.open((err) => {
-        expect(err).to.not.exist()
-        expect(levelStore.db.db.db instanceof memdown).to.equal(true)
-        expect(levelStore.db.options).to.include({
-          createIfMissing: true,
-          errorIfExists: true
-        })
-        done()
+      await levelStore.open()
+
+      expect(levelStore.db.db.db instanceof memdown).to.equal(true)
+      expect(levelStore.db.options).to.include({
+        createIfMissing: true,
+        errorIfExists: true
       })
     })
   })
 
-  eachSeries([
-    memdown,
-    LevelDown
-  ], (database) => {
+  ;[memdown, LevelDown].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
       require('interface-datastore/src/tests')({
-        setup (callback) {
-          callback(null, new LevelStore('datastore-test', {db: database}))
-        },
-        teardown (callback) {
-          memdown.clearGlobalStore()
-          callback()
-        }
+        setup: () => new LevelStore(`${os.tmpdir()}/datastore-level-test-${Math.random()}`, { db: database }),
+        teardown () {}
       })
     })
-  }, (err) => {
-    expect(err).to.not.exist()
   })
 })

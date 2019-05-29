@@ -40,3 +40,4 @@ dist
 test/test-repo/datastore
 init-default
 datastore-test
+.vscode

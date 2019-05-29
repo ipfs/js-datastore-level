@@ -3,10 +3,14 @@
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
-[![](https://coveralls.io/repos/github/ipfs/js-datastore-level/badge.svg?branch=master)](https://coveralls.io/github/ipfs/js-datastore-level?branch=master) [![Dependency Status](https://david-dm.org/diasdavid/js-peer-id.svg?style=flat-square)](https://david-dm.org/ipfs/js-datastore-level)
+[![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Build Status](https://flat.badgen.net/travis/ipfs/js-datastore-level)](https://travis-ci.com/ipfs/js-datastore-level)
+[![Codecov](https://codecov.io/gh/ipfs/js-datastore-level/branch/master/graph/badge.svg)](https://codecov.io/gh/ipfs/js-datastore-level)
+[![Dependency Status](https://david-dm.org/ipfs/js-datastore-level.svg?style=flat-square)](https://david-dm.org/ipfs/js-datastore-level)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 ![](https://img.shields.io/badge/npm-%3E%3D3.0.0-orange.svg?style=flat-square)
-![](https://img.shields.io/badge/Node.js-%3E%3D4.0.0-orange.svg?style=flat-square)
+![](https://img.shields.io/badge/Node.js-%3E%3D8.0.0-orange.svg?style=flat-square)
+
 
 > Datastore implementation with [levelup](https://github.com/level/levelup) backend.
 
@@ -16,11 +20,15 @@
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-  - [Browser Shimming Leveldown](#browser-shimming-leveldown)
-- [Contribute](#contribute)
-- [License](#license)
+- [js-datastore-level](#js-datastore-level)
+  - [Lead Maintainer](#lead-maintainer)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
+    - [Browser Shimming Leveldown](#browser-shimming-leveldown)
+    - [Database names](#database-names)
+  - [Contribute](#contribute)
+  - [License](#license)
 
 ## Install
 
@@ -32,6 +40,7 @@ $ npm install datastore-level
 
 ```js
 const LevelStore = require('datastore-level')
+
 // Default using leveldown as backend
 const store = new LevelStore('path/to/store')
 
@@ -45,12 +54,29 @@ const memStore = new LevelStore('my/mem/store', {db: require('memdown')})
 ### Browser Shimming Leveldown
 As `leveldown` does not work in the browser, `LevelStore` takes advantage of the browser property in package.json to shim `level-js` in its place. Most modern bundlers such as webpack, will see the shim and replace it for use in the browser. If you are using a bundler that does not support pkg.browser, you will need to handle the shimming yourself, as was the case with versions of `LevelStore` 0.7.0 and earlier.
 
+### Database names
+
+`level-js@3` changed the database prefix from `IDBWrapper-` to `level-js-`, so please specify the old prefix if you wish to continue using databases created using `datastore-level` prior to `v0.12.0`.  E.g.
+
+```javascript
+const leveljs = require('level-js')
+const browserStore = new LevelStore('my/db/name', {
+  db: (path) => leveljs(path, {
+    prefix: 'IDBWrapper-'
+  })
+})
+```
+
+More information: [https://github.com/Level/level-js/blob/master/UPGRADING.md#new-database-prefix](https://github.com/Level/level-js/blob/99831913e905d19e5f6dee56d512b7264fbed7bd/UPGRADING.md#new-database-prefix)
+
 ## Contribute
 
-PRs accepted.
+Feel free to join in. All welcome. Open an [issue](https://github.com/ipfs/js-datastore-level/issues)!
 
-Small note: If editing the Readme, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+This repository falls under the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+
+[![](https://cdn.rawgit.com/jbenet/contribute-ipfs-gif/master/img/contribute.gif)](https://github.com/ipfs/community/blob/master/contributing.md)
 
 ## License
 
-MIT 2017 © IPFS
+[MIT](LICENSE)
