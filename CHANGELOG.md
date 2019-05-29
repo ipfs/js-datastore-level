@@ -1,3 +1,14 @@
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/ipfs/js-datastore-level/compare/v0.11.0...v0.12.0) (2019-05-29)
+
+
+### Bug Fixes
+
+* remove unused var ([74d4a36](https://github.com/ipfs/js-datastore-level/commit/74d4a36))
+* tests ([601599d](https://github.com/ipfs/js-datastore-level/commit/601599d))
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/ipfs/js-datastore-level/compare/v0.10.0...v0.11.0) (2019-04-29)
 
