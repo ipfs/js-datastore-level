@@ -2,7 +2,6 @@
 
 const { Key, Errors, utils } = require('interface-datastore')
 const { filter, map, take, sortAll } = utils
-const { promisify } = require('util')
 
 /**
  * A datastore backed by leveldb.
@@ -23,13 +22,6 @@ class LevelDatastore {
       valueEncoding: 'binary',
       compression: false // same default as go
     })
-
-    this.db.put = promisify(this.db.put)
-    this.db.get = promisify(this.db.get)
-    this.db.del = promisify(this.db.del)
-    this.db.open = promisify(this.db.open)
-    this.db.close = promisify(this.db.close)
-    this.db.batch = promisify(this.db.batch)
   }
 
   async open () {
