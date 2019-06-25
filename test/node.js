@@ -17,7 +17,7 @@ describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
     const dir = utils.tmpdir()
     require('interface-datastore/src/tests')({
-      setup: () => new LevelStore(dir, { db: require('leveldown') }),
+      setup: () => new LevelStore(dir, { db: require('level') }),
       teardown: () => promisify(rimraf)(dir)
     })
   })
@@ -34,17 +34,17 @@ describe('LevelDatastore', () => {
         return new MountDatastore([{
           prefix: new Key('/a'),
           datastore: new LevelStore(dirs[0], {
-            db: require('leveldown')
+            db: require('level')
           })
         }, {
           prefix: new Key('/q'),
           datastore: new LevelStore(dirs[1], {
-            db: require('leveldown')
+            db: require('level')
           })
         }, {
           prefix: new Key('/z'),
           datastore: new LevelStore(dirs[2], {
-            db: require('leveldown')
+            db: require('level')
           })
         }])
       },
@@ -56,7 +56,7 @@ describe('LevelDatastore', () => {
 
   it.skip('interop with go', async () => {
     const store = new LevelStore(path.join(__dirname, 'test-repo', 'datastore'), {
-      db: require('leveldown')
+      db: require('level')
     })
 
     let cids = []
