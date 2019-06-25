@@ -21,14 +21,14 @@
 ## Table of Contents
 
 - [js-datastore-level](#js-datastore-level)
-  - [Lead Maintainer](#lead-maintainer)
-  - [Table of Contents](#table-of-contents)
-  - [Install](#install)
-  - [Usage](#usage)
-    - [Browser Shimming Leveldown](#browser-shimming-leveldown)
-    - [Database names](#database-names)
-  - [Contribute](#contribute)
-  - [License](#license)
+  - [Lead Maintainer](#Lead-Maintainer)
+  - [Table of Contents](#Table-of-Contents)
+  - [Install](#Install)
+  - [Usage](#Usage)
+    - [Browser Shimming Leveldown](#Browser-Shimming-Leveldown)
+    - [Database names](#Database-names)
+  - [Contribute](#Contribute)
+  - [License](#License)
 
 ## Install
 
@@ -41,18 +41,20 @@ $ npm install datastore-level
 ```js
 const LevelStore = require('datastore-level')
 
-// Default using leveldown as backend
+// Default using level as backend for node or the browser
 const store = new LevelStore('path/to/store')
 
-// use in the browser with level.js
-const browserStore = new LevelStore('my/db/name', {db: require('level-js')})
-
 // another leveldown compliant backend like memdown
-const memStore = new LevelStore('my/mem/store', {db: require('memdown')})
+const memStore = new LevelStore('my/mem/store', {
+  db: require('level-mem')
+})
 ```
 
 ### Browser Shimming Leveldown
-As `leveldown` does not work in the browser, `LevelStore` takes advantage of the browser property in package.json to shim `level-js` in its place. Most modern bundlers such as webpack, will see the shim and replace it for use in the browser. If you are using a bundler that does not support pkg.browser, you will need to handle the shimming yourself, as was the case with versions of `LevelStore` 0.7.0 and earlier.
+
+`LevelStore` uses the `level` module to automatically use `level.js` if a modern bundler is used which can detect bundle targets based on the `pkg.browser` property in your `package.json`.
+
+If you are using a bundler that does not support `pkg.browser`, you will need to handle the shimming yourself, as was the case with versions of `LevelStore` 0.7.0 and earlier.
 
 ### Database names
 
