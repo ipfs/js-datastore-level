@@ -4,8 +4,8 @@
 const chai = require('chai')
 chai.use(require('dirty-chai'))
 const expect = chai.expect
-const memdown = require('memdown')
-const LevelDown = require('leveldown')
+const levelmem = require('level-mem')
+const level = require('level')
 const os = require('os')
 const LevelStore = require('../src')
 
@@ -15,7 +15,6 @@ describe('LevelDatastore', () => {
       const levelStore = new LevelStore('init-default')
       await levelStore.open()
 
-      expect(levelStore.db.db.db instanceof LevelDown).to.equal(true)
       expect(levelStore.db.options).to.include({
         createIfMissing: true,
         errorIfExists: false
@@ -27,14 +26,13 @@ describe('LevelDatastore', () => {
 
     it('should be able to override the database', async () => {
       const levelStore = new LevelStore('init-default', {
-        db: memdown,
+        db: levelmem,
         createIfMissing: true,
         errorIfExists: true
       })
 
       await levelStore.open()
 
-      expect(levelStore.db.db.db instanceof memdown).to.equal(true)
       expect(levelStore.db.options).to.include({
         createIfMissing: true,
         errorIfExists: true
@@ -42,7 +40,7 @@ describe('LevelDatastore', () => {
     })
   })
 
-  ;[memdown, LevelDown].forEach(database => {
+  ;[levelmem, level].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
       require('interface-datastore/src/tests')({
         setup: () => new LevelStore(`${os.tmpdir()}/datastore-level-test-${Math.random()}`, { db: database }),

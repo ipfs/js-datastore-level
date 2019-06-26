@@ -1,9 +1,6 @@
 'use strict'
 
-const levelup = require('levelup')
 const { Key, Errors, utils } = require('interface-datastore')
-const encode = require('encoding-down')
-
 const { filter, map, take, sortAll } = utils
 
 /**
@@ -17,22 +14,14 @@ class LevelDatastore {
       database = opts.db
       delete opts.db
     } else {
-      // Default to leveldown db
-      database = require('leveldown')
+      database = require('level')
     }
 
-    this.db = levelup(
-      encode(database(path), { valueEncoding: 'binary' }),
-      Object.assign({}, opts, {
-        compression: false // same default as go
-      }),
-      (err) => {
-        // Prevent an uncaught exception error on duplicate locks
-        if (err) {
-          throw err
-        }
-      }
-    )
+    this.db = database(path, {
+      ...opts,
+      valueEncoding: 'binary',
+      compression: false // same default as go
+    })
   }
 
   async open () {

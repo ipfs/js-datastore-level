@@ -3,10 +3,7 @@
 
 const { MountDatastore } = require('datastore-core')
 const { Key } = require('interface-datastore')
-
-// leveldown will be swapped for level-js
-const leveljs = require('leveldown')
-
+const leveljs = require('level')
 const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
