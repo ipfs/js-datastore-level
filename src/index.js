@@ -17,7 +17,11 @@ class LevelDatastore {
       database = require('level')
     }
 
-    this.db = database(path, {
+    this.db = this._initDb(database, path, opts)
+  }
+
+  _initDb (database, path, opts) {
+    return database(path, {
       ...opts,
       valueEncoding: 'binary',
       compression: false // same default as go
