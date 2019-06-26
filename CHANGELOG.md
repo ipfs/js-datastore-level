@@ -1,3 +1,13 @@
+<a name="0.12.1"></a>
+## [0.12.1](https://github.com/ipfs/js-datastore-level/compare/v0.12.0...v0.12.1) (2019-06-26)
+
+
+### Bug Fixes
+
+* swap leveldown/level.js for level ([#20](https://github.com/ipfs/js-datastore-level/issues/20)) ([d16e212](https://github.com/ipfs/js-datastore-level/commit/d16e212))
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/ipfs/js-datastore-level/compare/v0.11.0...v0.12.0) (2019-05-29)
 
