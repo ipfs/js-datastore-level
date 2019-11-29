@@ -59,7 +59,7 @@ describe('LevelDatastore', () => {
       db: require('level')
     })
 
-    let cids = []
+    const cids = []
 
     for await (const e of store.query({})) {
       cids.push(new CID(1, 'dag-cbor', e.key.toBuffer()))
