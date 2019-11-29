@@ -39,7 +39,7 @@
   "dependencies": {
     "datastore-core": "~0.7.0",
     "interface-datastore": "^0.8.0",
-    "level": "^6.0.0"
+    "level": "^5.0.1"
   },
   "devDependencies": {
     "aegir": "^20.4.1",
