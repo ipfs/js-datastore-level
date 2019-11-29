@@ -38,16 +38,16 @@
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
     "datastore-core": "~0.7.0",
-    "interface-datastore": "~0.7.0",
-    "level": "^5.0.1"
+    "interface-datastore": "^0.8.0",
+    "level": "^6.0.0"
   },
   "devDependencies": {
-    "aegir": "^19.0.3",
+    "aegir": "^20.4.1",
     "chai": "^4.2.0",
     "cids": "~0.7.1",
     "dirty-chai": "^2.0.1",
-    "level-mem": "^4.0.0",
-    "rimraf": "^2.6.2"
+    "level-mem": "^5.0.1",
+    "rimraf": "^3.0.0"
   },
   "contributors": [
     "Alan Shaw <alan.shaw@protocol.ai>",
