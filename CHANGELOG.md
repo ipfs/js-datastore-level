@@ -1,3 +1,13 @@
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/ipfs/js-datastore-level/compare/v0.12.1...v0.13.0) (2019-11-29)
+
+
+### Bug Fixes
+
+* init db in overridable method for easier extending ([#21](https://github.com/ipfs/js-datastore-level/issues/21)) ([b21428c](https://github.com/ipfs/js-datastore-level/commit/b21428c))
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/ipfs/js-datastore-level/compare/v0.12.0...v0.12.1) (2019-06-26)
 
