@@ -105,7 +105,7 @@ class LevelDatastore {
       values = !q.keysOnly
     }
 
-    let opts = {
+    const opts = {
       keys: true,
       values: values,
       keyAsBuffer: true
