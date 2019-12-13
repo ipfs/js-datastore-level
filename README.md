@@ -36,6 +36,12 @@
 $ npm install datastore-level
 ```
 
+The type definitions for this package are available on http://definitelytyped.org/. To install just use:
+
+```sh
+$ npm install -D @types/datastore-level
+```
+
 ## Usage
 
 ```js
