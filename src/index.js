@@ -121,7 +121,7 @@ class LevelDatastore {
     }
 
     let it = levelIteratorToIterator(
-      this.db.db.iterator(opts)
+      this.db.iterator(opts)
     )
 
     it = map(it, ({ key, value }) => {
