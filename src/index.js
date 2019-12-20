@@ -105,12 +105,23 @@ class LevelDatastore {
       values = !q.keysOnly
     }
 
+    const opts = {
+      keys: true,
+      values: values,
+      keyAsBuffer: true
+    }
+
+    // Let the db do the prefix matching
+    if (q.prefix != null) {
+      const prefix = q.prefix.toString()
+      // Match keys greater than or equal to `prefix` and
+      opts.gte = prefix
+      // less than `prefix` + \xFF (hex escape sequence)
+      opts.lt = prefix + '\xFF'
+    }
+
     let it = levelIteratorToIterator(
-      this.db.db.iterator({
-        keys: true,
-        values: values,
-        keyAsBuffer: true
-      })
+      this.db.iterator(opts)
     )
 
     it = map(it, ({ key, value }) => {
@@ -120,10 +131,6 @@ class LevelDatastore {
       }
       return res
     })
-
-    if (q.prefix != null) {
-      it = filter(it, e => e.key.toString().startsWith(q.prefix))
-    }
 
     if (Array.isArray(q.filters)) {
       it = q.filters.reduce((it, f) => filter(it, f), it)
