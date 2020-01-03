@@ -158,7 +158,12 @@ function levelIteratorToIterator (li) {
     next: () => new Promise((resolve, reject) => {
       li.next((err, key, value) => {
         if (err) return reject(err)
-        if (key == null) return resolve({ done: true })
+        if (key == null) {
+          return li.end(err => {
+            if (err) return reject(err)
+            resolve({ done: true })
+          })
+        }
         resolve({ done: false, value: { key, value } })
       })
     }),
