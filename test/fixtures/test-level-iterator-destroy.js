@@ -8,7 +8,7 @@ async function testLevelIteratorDestroy () {
   await store.open()
   await store.put(`/test/key${Date.now()}`, Buffer.from(`TESTDATA${Date.now()}`))
   for await (const d of store.query({})) {
-    console.log(d)
+    console.log(d) // eslint-disable-line no-console
   }
 }
 
