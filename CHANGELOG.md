@@ -1,3 +1,18 @@
+<a name="0.14.1"></a>
+## [0.14.1](https://github.com/ipfs/js-datastore-level/compare/v0.14.0...v0.14.1) (2020-01-14)
+
+
+### Bug Fixes
+
+* leveldb iterator memory leak ([#26](https://github.com/ipfs/js-datastore-level/issues/26)) ([e503c1a](https://github.com/ipfs/js-datastore-level/commit/e503c1a)), closes [/github.com/Level/leveldown/blob/d3453fbde4d2a8aa04d9091101c25c999649069b/binding.cc#L545](https://github.com//github.com/Level/leveldown/blob/d3453fbde4d2a8aa04d9091101c25c999649069b/binding.cc/issues/L545)
+
+
+### Performance Improvements
+
+* optimize prefix search ([#25](https://github.com/ipfs/js-datastore-level/issues/25)) ([8efa812](https://github.com/ipfs/js-datastore-level/commit/8efa812))
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/ipfs/js-datastore-level/compare/v0.13.0...v0.14.0) (2019-11-29)
 
