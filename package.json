@@ -44,7 +44,7 @@
   "devDependencies": {
     "aegir": "^20.4.1",
     "chai": "^4.2.0",
-    "cids": "~0.7.1",
+    "cids": "~0.8.0",
     "dirty-chai": "^2.0.1",
     "level-mem": "^5.0.1",
     "rimraf": "^3.0.0"
