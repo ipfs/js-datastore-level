@@ -1,6 +1,6 @@
 {
   "name": "datastore-level",
-  "version": "0.14.1",
+  "version": "1.0.0",
   "description": "Datastore implementation with level(up|down) backend",
   "leadMaintainer": "Pedro Teixeira <pedro@protocol.ai>",
   "main": "src/index.js",
@@ -50,17 +50,19 @@
     "rimraf": "^3.0.0"
   },
   "contributors": [
-    "Alan Shaw <alan.shaw@protocol.ai>",
-    "Carson Farmer <carson.farmer@gmail.com>",
     "David Dias <daviddias.p@gmail.com>",
+    "achingbrain <alex@achingbrain.net>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
     "Jacob Heun <jacobheun@gmail.com>",
-    "Jan Klosinski <vanjan@protonmail.com>",
+    "Alan Shaw <alan.shaw@protocol.ai>",
     "Pedro Teixeira <i@pgte.me>",
+    "Carson Farmer <carson.farmer@gmail.com>",
+    "Victor Bjelkholm <victorbjelkholm@gmail.com>",
+    "Hector Sanjuan <code@hector.link>",
+    "Hugo Dias <hugomrdias@gmail.com>",
+    "Jan Klosinski <vanjan@protonmail.com>",
     "Richard Schneider <makaretu@gmail.com>",
     "Rod Vagg <rod@vagg.org>",
-    "Vasco Santos <vasco.santos@moxy.studio>",
-    "Victor Bjelkholm <victorbjelkholm@gmail.com>",
-    "achingbrain <alex@achingbrain.net>"
+    "Vasco Santos <vasco.santos@moxy.studio>"
   ]
 }
