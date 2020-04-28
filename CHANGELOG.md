@@ -1,3 +1,8 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/ipfs/js-datastore-level/compare/v0.14.1...v1.0.0) (2020-04-28)
+
+
+
 <a name="0.14.1"></a>
 ## [0.14.1](https://github.com/ipfs/js-datastore-level/compare/v0.14.0...v0.14.1) (2020-01-14)
 
