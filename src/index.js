@@ -99,8 +99,8 @@ class LevelDatastore extends Adapter {
           key: key.toString()
         })
       },
-      commit: (options) => {
-        return this.db.batch(ops, options)
+      commit: () => {
+        return this.db.batch(ops)
       }
     }
   }
