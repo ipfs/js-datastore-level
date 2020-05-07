@@ -1,13 +1,19 @@
 'use strict'
 
-const { Key, Errors, utils } = require('interface-datastore')
-const { filter, map, take, sortAll } = utils
+const {
+  Key, Errors, Adapter,
+  utils: {
+    filter, map, take, sortAll
+  }
+} = require('interface-datastore')
 
 /**
  * A datastore backed by leveldb.
  */
-class LevelDatastore {
+class LevelDatastore extends Adapter {
   constructor (path, opts) {
+    super()
+
     let database
 
     if (opts && opts.db) {
@@ -93,8 +99,8 @@ class LevelDatastore {
           key: key.toString()
         })
       },
-      commit: () => {
-        return this.db.batch(ops)
+      commit: (options) => {
+        return this.db.batch(ops, options)
       }
     }
   }
