@@ -1,3 +1,18 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/ipfs/js-datastore-level/compare/v1.0.0...v1.1.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* **ci:** add empty commit to fix lint checks on master ([60d14c0](https://github.com/ipfs/js-datastore-level/commit/60d14c0))
+
+
+### Features
+
+* add streaming/cancellable API ([#34](https://github.com/ipfs/js-datastore-level/issues/34)) ([6bfb51a](https://github.com/ipfs/js-datastore-level/commit/6bfb51a))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/ipfs/js-datastore-level/compare/v0.14.1...v1.0.0) (2020-04-28)
 
