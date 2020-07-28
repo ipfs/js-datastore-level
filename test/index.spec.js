@@ -6,8 +6,8 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 const levelmem = require('level-mem')
 const level = require('level')
-const os = require('os')
 const LevelStore = require('../src')
+const { utils } = require('interface-datastore')
 
 describe('LevelDatastore', () => {
   describe('initialization', () => {
@@ -43,7 +43,7 @@ describe('LevelDatastore', () => {
   ;[levelmem, level].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
       require('interface-datastore/src/tests')({
-        setup: () => new LevelStore(`${os.tmpdir()}/datastore-level-test-${Math.random()}`, { db: database }),
+        setup: () => new LevelStore(utils.tmpdir(), { db: database }),
         teardown () {}
       })
     })
