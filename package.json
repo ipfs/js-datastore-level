@@ -39,7 +39,7 @@
   "dependencies": {
     "datastore-core": "ipfs/js-datastore-core#fix/remove-node-buffers",
     "interface-datastore": "ipfs/interface-datastore#fix/remove-node-buffer",
-    "level": "^5.0.2"
+    "level": "^5.0.1"
   },
   "devDependencies": {
     "aegir": "^25.0.0",
