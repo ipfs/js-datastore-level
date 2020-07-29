@@ -37,8 +37,8 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "ipfs/js-datastore-core#fix/remove-node-buffers",
-    "interface-datastore": "ipfs/interface-datastore#fix/remove-node-buffer",
+    "datastore-core": "^2.0.0",
+    "interface-datastore": "^2.0.0",
     "level": "^5.0.1"
   },
   "devDependencies": {

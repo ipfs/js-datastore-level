@@ -63,7 +63,7 @@ describe('LevelDatastore', () => {
     const cids = []
 
     for await (const e of store.query({})) {
-      cids.push(new CID(1, 'dag-cbor', e.key.toBuffer()))
+      cids.push(new CID(1, 'dag-cbor', e.key.uint8Array()))
     }
 
     expect(cids[0].version).to.be.eql(0)
