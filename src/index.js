@@ -133,7 +133,7 @@ class LevelDatastore extends Adapter {
     it = map(it, ({ key, value }) => {
       const res = { key: new Key(key, false) }
       if (values) {
-        res.value = Buffer.from(value)
+        res.value = value
       }
       return res
     })
