@@ -42,7 +42,7 @@
     "level": "^5.0.1"
   },
   "devDependencies": {
-    "aegir": "^25.0.0",
+    "aegir": "^28.0.2",
     "chai": "^4.2.0",
     "cids": "^0.8.3",
     "dirty-chai": "^2.0.1",
