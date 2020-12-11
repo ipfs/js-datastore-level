@@ -13,7 +13,7 @@ describe('LevelDatastore', () => {
       teardown: () => new Promise((resolve, reject) => {
         leveljs.destroy('hello', err => {
           if (err) return reject(err)
-          resolve()
+          resolve(true)
         })
       })
     })
@@ -38,7 +38,7 @@ describe('LevelDatastore', () => {
           return new Promise((resolve, reject) => {
             leveljs.destroy(dir, err => {
               if (err) return reject(err)
-              resolve()
+              resolve(true)
             })
           })
         }))

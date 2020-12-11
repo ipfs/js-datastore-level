@@ -4,12 +4,25 @@
   "description": "Datastore implementation with level(up|down) backend",
   "leadMaintainer": "Pedro Teixeira <pedro@protocol.ai>",
   "main": "src/index.js",
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "src/*": [
+        "dist/src/*",
+        "dist/src/*/index"
+      ]
+    }
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "test": "aegir test",
     "test:node": "aegir test -t node",
     "test:browser": "aegir test -t browser",
     "test:webworker": "aegir test -t webworker",
-    "build": "aegir build",
+    "prepare": "aegir build",
     "lint": "aegir lint",
     "release": "aegir release",
     "release-minor": "aegir release --type minor",
@@ -37,17 +50,20 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "^2.0.0",
-    "interface-datastore": "^2.0.0",
+    "datastore-core": "ipfs/js-datastore-core#feat/ts-types",
+    "interface-datastore": "ipfs/interface-datastore#feat/ts-types",
     "level": "^5.0.1"
   },
   "devDependencies": {
-    "aegir": "^28.1.0",
+    "aegir": "ipfs/aegir#feat/ts-4.1.x",
     "chai": "^4.2.0",
     "cids": "^1.0.2",
     "dirty-chai": "^2.0.1",
     "level-mem": "^5.0.1",
     "rimraf": "^3.0.0"
+  },
+  "eslintConfig": {
+    "extends": "ipfs"
   },
   "contributors": [
     "David Dias <daviddias.p@gmail.com>",

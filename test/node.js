@@ -89,8 +89,9 @@ describe('LevelDatastore', () => {
     const cp = childProcess.fork(`${__dirname}/fixtures/test-level-iterator-destroy`, { stdio: 'pipe' })
 
     let out = ''
-    cp.stdout.on('data', d => { out += d })
-    cp.stderr.on('data', d => { out += d })
+    const { stdout, stderr } = cp
+    stdout && stdout.on('data', d => { out += d })
+    stderr && stderr.on('data', d => { out += d })
 
     cp.on('exit', code => {
       expect(code).to.equal(0)

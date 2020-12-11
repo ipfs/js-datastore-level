@@ -8,7 +8,15 @@ const {
 } = require('interface-datastore')
 
 /**
+ * @typedef {import('interface-datastore/src/types').Datastore} Datastore
+ * @typedef {import('interface-datastore/src/types').Pair} Pair
+ * @typedef {import('interface-datastore/src/key')} Key
+ */
+
+/**
  * A datastore backed by leveldb.
+ *
+ * @implements {Datastore}
  */
 class LevelDatastore extends Adapter {
   constructor (path, opts) {
@@ -131,11 +139,10 @@ class LevelDatastore extends Adapter {
     )
 
     it = map(it, ({ key, value }) => {
-      const res = { key: new Key(key, false) }
       if (values) {
-        res.value = value
+        return { key, value }
       }
-      return res
+      return /** @type {Pair} */({ key })
     })
 
     if (Array.isArray(q.filters)) {
@@ -159,28 +166,33 @@ class LevelDatastore extends Adapter {
   }
 }
 
+/**
+ * @param {any} li - Level iterator
+ * @returns {AsyncIterable<Pair>}
+ */
 function levelIteratorToIterator (li) {
   return {
-    next: () => new Promise((resolve, reject) => {
-      li.next((err, key, value) => {
-        if (err) return reject(err)
-        if (key == null) {
-          return li.end(err => {
-            if (err) return reject(err)
-            resolve({ done: true })
-          })
-        }
-        resolve({ done: false, value: { key, value } })
-      })
-    }),
-    return: () => new Promise((resolve, reject) => {
-      li.end(err => {
-        if (err) return reject(err)
-        resolve({ done: true })
-      })
-    }),
     [Symbol.asyncIterator] () {
-      return this
+      return {
+        next: () => new Promise((resolve, reject) => {
+          li.next((err, key, value) => {
+            if (err) return reject(err)
+            if (key == null) {
+              return li.end(err => {
+                if (err) return reject(err)
+                resolve({ done: true, value: undefined })
+              })
+            }
+            resolve({ done: false, value: { key: new Key(key, false), value } })
+          })
+        }),
+        return: () => new Promise((resolve, reject) => {
+          li.end(err => {
+            if (err) return reject(err)
+            resolve({ done: true, value: undefined })
+          })
+        })
+      }
     }
   }
 }
