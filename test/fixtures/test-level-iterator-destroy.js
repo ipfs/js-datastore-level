@@ -1,12 +1,13 @@
 'use strict'
 
-const { utils } = require('interface-datastore')
+const { utils, Key } = require('interface-datastore')
 const LevelStore = require('../../src')
 
 async function testLevelIteratorDestroy () {
+  // @ts-ignore
   const store = new LevelStore(utils.tmpdir(), { db: require('level') })
   await store.open()
-  await store.put(`/test/key${Date.now()}`, Buffer.from(`TESTDATA${Date.now()}`))
+  await store.put(new Key(`/test/key${Date.now()}`), Buffer.from(`TESTDATA${Date.now()}`))
   for await (const d of store.query({})) {
     console.log(d) // eslint-disable-line no-console
   }

@@ -8,9 +8,11 @@ const {
 } = require('interface-datastore')
 
 /**
- * @typedef {import('interface-datastore/src/types').Datastore} Datastore
- * @typedef {import('interface-datastore/src/types').Pair} Pair
- * @typedef {import('interface-datastore/src/key')} Key
+ * @typedef {import('interface-datastore').Datastore} Datastore
+ * @typedef {import('interface-datastore').Pair} Pair
+ * @typedef {import('interface-datastore').Batch} Batch
+ * @typedef {import('interface-datastore').Query} Query
+ * @typedef {import('interface-datastore').Options} QueryOptions
  */
 
 /**
@@ -19,6 +21,13 @@ const {
  * @implements {Datastore}
  */
 class LevelDatastore extends Adapter {
+  /**
+   * @param {any} path
+   * @param {Object} [opts]
+   * @param {any} [opts.db] - level db reference
+   * @param {boolean} [opts.createIfMissing]
+   * @param {boolean} [opts.errorIfExists]
+   */
   constructor (path, opts) {
     super()
 
@@ -28,13 +37,19 @@ class LevelDatastore extends Adapter {
       database = opts.db
       delete opts.db
     } else {
+      // @ts-ignore
       database = require('level')
     }
 
     this.db = this._initDb(database, path, opts)
   }
 
-  _initDb (database, path, opts) {
+  /**
+   * @param {(arg0: any, arg1: any) => any} database
+   * @param {string} path
+   * @param {any} opts
+   */
+  _initDb (database, path, opts = {}) {
     return database(path, {
       ...opts,
       valueEncoding: 'binary',
@@ -50,6 +65,10 @@ class LevelDatastore extends Adapter {
     }
   }
 
+  /**
+   * @param {Key} key
+   * @param {Uint8Array} value
+   */
   async put (key, value) {
     try {
       await this.db.put(key.toString(), value)
@@ -58,6 +77,10 @@ class LevelDatastore extends Adapter {
     }
   }
 
+  /**
+   * @param {Key} key
+   * @returns {Promise<Uint8Array>}
+   */
   async get (key) {
     let data
     try {
@@ -69,6 +92,10 @@ class LevelDatastore extends Adapter {
     return data
   }
 
+  /**
+   * @param {Key} key
+   * @returns {Promise<boolean>}
+   */
   async has (key) {
     try {
       await this.db.get(key.toString())
@@ -79,6 +106,10 @@ class LevelDatastore extends Adapter {
     return true
   }
 
+  /**
+   * @param {Key} key
+   * @returns {Promise<void>}
+   */
   async delete (key) {
     try {
       await this.db.del(key.toString())
@@ -91,7 +122,11 @@ class LevelDatastore extends Adapter {
     return this.db.close()
   }
 
+  /**
+   * @returns {Batch}
+   */
   batch () {
+    /** @type {{ type: string; key: string; value?: Uint8Array; }[]} */
     const ops = []
     return {
       put: (key, value) => {
@@ -113,6 +148,10 @@ class LevelDatastore extends Adapter {
     }
   }
 
+  /**
+   * @param {Query} q
+   * @returns {AsyncIterable<Pair>}
+   */
   query (q) {
     let values = true
     if (q.keysOnly != null) {
@@ -129,8 +168,10 @@ class LevelDatastore extends Adapter {
     if (q.prefix != null) {
       const prefix = q.prefix.toString()
       // Match keys greater than or equal to `prefix` and
+      // @ts-ignore
       opts.gte = prefix
       // less than `prefix` + \xFF (hex escape sequence)
+      // @ts-ignore
       opts.lt = prefix + '\xFF'
     }
 
@@ -152,14 +193,14 @@ class LevelDatastore extends Adapter {
     if (Array.isArray(q.orders)) {
       it = q.orders.reduce((it, f) => sortAll(it, f), it)
     }
-
-    if (q.offset != null) {
+    const { offset, limit } = q
+    if (offset) {
       let i = 0
-      it = filter(it, () => i++ >= q.offset)
+      it = filter(it, () => i++ >= offset)
     }
 
-    if (q.limit != null) {
-      it = take(it, q.limit)
+    if (limit) {
+      it = take(it, limit)
     }
 
     return it
@@ -167,7 +208,13 @@ class LevelDatastore extends Adapter {
 }
 
 /**
- * @param {any} li - Level iterator
+ * @typedef {Object} LevelIterator
+ * @property {(cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void} next
+ * @property {(cb: (err: Error) => void) => void } end
+ */
+
+/**
+ * @param {LevelIterator} li - Level iterator
  * @returns {AsyncIterable<Pair>}
  */
 function levelIteratorToIterator (li) {

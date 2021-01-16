@@ -5,14 +5,6 @@
   "leadMaintainer": "Pedro Teixeira <pedro@protocol.ai>",
   "main": "src/index.js",
   "types": "dist/src/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "src/*": [
-        "dist/src/*",
-        "dist/src/*/index"
-      ]
-    }
-  },
   "files": [
     "src",
     "dist"
@@ -22,7 +14,7 @@
     "test:node": "aegir test -t node",
     "test:browser": "aegir test -t browser",
     "test:webworker": "aegir test -t webworker",
-    "prepare": "aegir build",
+    "prepare": "aegir build --no-bundle",
     "lint": "aegir lint",
     "release": "aegir release",
     "release-minor": "aegir release --type minor",
@@ -51,13 +43,13 @@
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
     "datastore-core": "ipfs/js-datastore-core#feat/ts-types",
-    "interface-datastore": "ipfs/interface-datastore#feat/ts-types",
+    "interface-datastore": "ipfs/interface-datastore#chore/export-types-from-entrypoint",
     "level": "^5.0.1"
   },
   "devDependencies": {
-    "aegir": "ipfs/aegir#feat/ts-4.1.x",
+    "aegir": "^30.3.0",
     "chai": "^4.2.0",
-    "cids": "^1.0.2",
+    "cids": "^1.1.5",
     "dirty-chai": "^2.0.1",
     "level-mem": "^5.0.1",
     "rimraf": "^3.0.0"

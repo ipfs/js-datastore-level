@@ -4,7 +4,9 @@
 const chai = require('chai')
 chai.use(require('dirty-chai'))
 const expect = chai.expect
+// @ts-ignore
 const levelmem = require('level-mem')
+// @ts-ignore
 const level = require('level')
 const LevelStore = require('../src')
 const { utils } = require('interface-datastore')
@@ -42,6 +44,7 @@ describe('LevelDatastore', () => {
 
   ;[levelmem, level].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
+      // @ts-ignore
       require('interface-datastore/src/tests')({
         setup: () => new LevelStore(utils.tmpdir(), { db: database }),
         teardown () {}
