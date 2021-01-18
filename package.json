@@ -43,7 +43,7 @@
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
     "datastore-core": "ipfs/js-datastore-core#feat/ts-types",
-    "interface-datastore": "ipfs/interface-datastore#chore/export-types-from-entrypoint",
+    "interface-datastore": "^3.0.1",
     "level": "^5.0.1"
   },
   "devDependencies": {
