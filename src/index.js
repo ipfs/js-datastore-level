@@ -30,36 +30,46 @@ class LevelDatastore extends Adapter {
    */
   constructor (path, opts) {
     super()
-
-    let database
-
+    this.path = path
+    this.opts = opts
+    this.isCreated = false
     if (opts && opts.db) {
-      database = opts.db
+      this.database = opts.db
       delete opts.db
     } else {
       // @ts-ignore
-      database = require('level')
+      this.database = require('level')
     }
-
-    this.db = this._initDb(database, path, opts)
   }
 
-  /**
-   * @param {(arg0: any, arg1: any) => any} database
-   * @param {string} path
-   * @param {any} opts
-   */
-  _initDb (database, path, opts = {}) {
-    return database(path, {
-      ...opts,
-      valueEncoding: 'binary',
-      compression: false // same default as go
+  _initDb () {
+    return new Promise((resolve, reject) => {
+      this.db = this.database(
+        this.path,
+        {
+          ...this.opts,
+          valueEncoding: 'binary',
+          compression: false // same default as go
+        },
+        /** @param {Error}  [err] */
+        (err) => {
+          if (err) {
+            return reject(err)
+          }
+          resolve(this.db)
+        }
+      )
     })
   }
 
   async open () {
     try {
-      await this.db.open()
+      if (this.db) {
+        await this.db.open()
+      } else {
+        this.db = await this._initDb()
+        this.isCreated = true
+      }
     } catch (err) {
       throw Errors.dbOpenFailedError(err)
     }
@@ -119,7 +129,7 @@ class LevelDatastore extends Adapter {
   }
 
   close () {
-    return this.db.close()
+    return this.db && this.db.close()
   }
 
   /**
