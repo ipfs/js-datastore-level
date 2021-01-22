@@ -32,7 +32,7 @@ class LevelDatastore extends Adapter {
     super()
     this.path = path
     this.opts = opts
-    this.isCreated = false
+
     if (opts && opts.db) {
       this.database = opts.db
       delete opts.db
@@ -68,7 +68,6 @@ class LevelDatastore extends Adapter {
         await this.db.open()
       } else {
         this.db = await this._initDb()
-        this.isCreated = true
       }
     } catch (err) {
       throw Errors.dbOpenFailedError(err)
