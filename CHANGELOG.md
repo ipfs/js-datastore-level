@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/ipfs/js-datastore-level/compare/v2.0.0...v3.0.0) (2021-01-22)
+
+
+### Bug Fixes
+
+* fix constructor ([#58](https://github.com/ipfs/js-datastore-level/issues/58)) ([621e425](https://github.com/ipfs/js-datastore-level/commit/621e42569d8c31c3d2b7311a8abd2594fa6621bd))
+
+
+### Features
+
+* types ([#53](https://github.com/ipfs/js-datastore-level/issues/53)) ([51cd55e](https://github.com/ipfs/js-datastore-level/commit/51cd55e34aa5139dd9dfdb8966df5283e3c5a324))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/ipfs/js-datastore-level/compare/v1.1.0...v2.0.0) (2020-07-29)
 
