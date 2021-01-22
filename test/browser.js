@@ -3,23 +3,27 @@
 
 const { MountDatastore } = require('datastore-core')
 const { Key } = require('interface-datastore')
+// @ts-ignore
 const leveljs = require('level')
 const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
+    // @ts-ignore
     require('interface-datastore/src/tests')({
       setup: () => new LevelStore('hello', { db: leveljs }),
       teardown: () => new Promise((resolve, reject) => {
+        // @ts-ignore
         leveljs.destroy('hello', err => {
           if (err) return reject(err)
-          resolve()
+          resolve(true)
         })
       })
     })
   })
 
   describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
+    // @ts-ignore
     require('interface-datastore/src/tests')({
       setup () {
         return new MountDatastore([{
@@ -36,9 +40,10 @@ describe('LevelDatastore', () => {
       teardown () {
         return Promise.all(['one', 'two', 'three'].map(dir => {
           return new Promise((resolve, reject) => {
+            // @ts-ignore
             leveljs.destroy(dir, err => {
               if (err) return reject(err)
-              resolve()
+              resolve(true)
             })
           })
         }))

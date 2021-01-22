@@ -6,19 +6,24 @@ chai.use(require('dirty-chai'))
 const expect = chai.expect
 const path = require('path')
 const { Key, utils } = require('interface-datastore')
+// @ts-ignore
 const rimraf = require('rimraf')
 const { MountDatastore } = require('datastore-core')
 const CID = require('cids')
 const { promisify } = require('util')
 const childProcess = require('child_process')
+// @ts-ignore
+const level = require('level')
+// @ts-ignore
+const tests = require('interface-datastore/src/tests')
 
 const LevelStore = require('../src')
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
     const dir = utils.tmpdir()
-    require('interface-datastore/src/tests')({
-      setup: () => new LevelStore(dir, { db: require('level') }),
+    tests({
+      setup: () => new LevelStore(dir, { db: level }),
       teardown: () => promisify(rimraf)(dir)
     })
   })
@@ -30,22 +35,22 @@ describe('LevelDatastore', () => {
       utils.tmpdir()
     ]
 
-    require('interface-datastore/src/tests')({
+    tests({
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),
           datastore: new LevelStore(dirs[0], {
-            db: require('level')
+            db: level
           })
         }, {
           prefix: new Key('/q'),
           datastore: new LevelStore(dirs[1], {
-            db: require('level')
+            db: level
           })
         }, {
           prefix: new Key('/z'),
           datastore: new LevelStore(dirs[2], {
-            db: require('level')
+            db: level
           })
         }])
       },
@@ -57,7 +62,7 @@ describe('LevelDatastore', () => {
 
   it.skip('interop with go', async () => {
     const store = new LevelStore(path.join(__dirname, 'test-repo', 'datastore'), {
-      db: require('level')
+      db: level
     })
 
     const cids = []
@@ -86,11 +91,12 @@ describe('LevelDatastore', () => {
   //
   // https://github.com/Level/leveldown/blob/d3453fbde4d2a8aa04d9091101c25c999649069b/binding.cc#L545
   it('should not leave iterators open and leak memory', (done) => {
-    const cp = childProcess.fork(`${__dirname}/fixtures/test-level-iterator-destroy`, { stdio: 'pipe' })
+    const cp = childProcess.fork(path.join(__dirname, '/fixtures/test-level-iterator-destroy'), { stdio: 'pipe' })
 
     let out = ''
-    cp.stdout.on('data', d => { out += d })
-    cp.stderr.on('data', d => { out += d })
+    const { stdout, stderr } = cp
+    stdout && stdout.on('data', d => { out += d })
+    stderr && stderr.on('data', d => { out += d })
 
     cp.on('exit', code => {
       expect(code).to.equal(0)
