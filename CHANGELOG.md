@@ -1,3 +1,17 @@
+# [4.0.0](https://github.com/ipfs/js-datastore-level/compare/v3.0.0...v4.0.0) (2021-01-29)
+
+
+### chore
+
+* **deps:** bump level from 5.0.1 to 6.0.1 ([#31](https://github.com/ipfs/js-datastore-level/issues/31)) ([06853bd](https://github.com/ipfs/js-datastore-level/commit/06853bd389f1f0c8cd00d12219040a903ed48633))
+
+
+### BREAKING CHANGES
+
+* **deps:** requires an upgrade to existing datastores created in the browser with level-js@4 or below
+
+
+
 # [3.0.0](https://github.com/ipfs/js-datastore-level/compare/v2.0.0...v3.0.0) (2021-01-22)
 
 
