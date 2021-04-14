@@ -10,7 +10,7 @@ const esbuild = {
 /** @type {import('aegir').PartialOptions} */
 module.exports = {
   build: {
-    bundlesizeMax: '253kB'
+    bundlesizeMax: '65KB'
   },
   test: {
     browser: {

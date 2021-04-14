@@ -49,6 +49,7 @@
   "devDependencies": {
     "aegir": "^33.1.0",
     "assert": "^2.0.0",
+    "buffer": "^6.0.3",
     "chai": "^4.2.0",
     "cids": "^1.1.5",
     "dirty-chai": "^2.0.1",
