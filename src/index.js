@@ -194,7 +194,7 @@ class LevelDatastore extends Adapter {
   /**
    * @param {KeyQuery} q
    */
-   queryKeys (q) {
+  queryKeys (q) {
     let it = map(this._query({
       values: false,
       prefix: q.prefix
