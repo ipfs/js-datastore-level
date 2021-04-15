@@ -3,15 +3,19 @@
 const {
   Key, Errors, Adapter,
   utils: {
-    filter, map, take, sortAll
+    sortAll
   }
 } = require('interface-datastore')
+const filter = require('it-filter')
+const map = require('it-map')
+const take = require('it-take')
 
 /**
  * @typedef {import('interface-datastore').Datastore} Datastore
  * @typedef {import('interface-datastore').Pair} Pair
  * @typedef {import('interface-datastore').Batch} Batch
  * @typedef {import('interface-datastore').Query} Query
+ * @typedef {import('interface-datastore').KeyQuery} KeyQuery
  * @typedef {import('interface-datastore').Options} QueryOptions
  */
 
@@ -159,40 +163,11 @@ class LevelDatastore extends Adapter {
 
   /**
    * @param {Query} q
-   * @returns {AsyncIterable<Pair>}
    */
   query (q) {
-    let values = true
-    if (q.keysOnly != null) {
-      values = !q.keysOnly
-    }
-
-    const opts = {
-      keys: true,
-      values: values,
-      keyAsBuffer: true
-    }
-
-    // Let the db do the prefix matching
-    if (q.prefix != null) {
-      const prefix = q.prefix.toString()
-      // Match keys greater than or equal to `prefix` and
-      // @ts-ignore
-      opts.gte = prefix
-      // less than `prefix` + \xFF (hex escape sequence)
-      // @ts-ignore
-      opts.lt = prefix + '\xFF'
-    }
-
-    let it = levelIteratorToIterator(
-      this.db.iterator(opts)
-    )
-
-    it = map(it, ({ key, value }) => {
-      if (values) {
-        return { key, value }
-      }
-      return /** @type {Pair} */({ key })
+    let it = this._query({
+      values: true,
+      prefix: q.prefix
     })
 
     if (Array.isArray(q.filters)) {
@@ -202,6 +177,7 @@ class LevelDatastore extends Adapter {
     if (Array.isArray(q.orders)) {
       it = q.orders.reduce((it, f) => sortAll(it, f), it)
     }
+
     const { offset, limit } = q
     if (offset) {
       let i = 0
@@ -213,6 +189,63 @@ class LevelDatastore extends Adapter {
     }
 
     return it
+  }
+
+  /**
+   * @param {KeyQuery} q
+   */
+   queryKeys (q) {
+    let it = map(this._query({
+      values: false,
+      prefix: q.prefix
+    }), ({ key }) => key)
+
+    if (Array.isArray(q.filters)) {
+      it = q.filters.reduce((it, f) => filter(it, f), it)
+    }
+
+    if (Array.isArray(q.orders)) {
+      it = q.orders.reduce((it, f) => sortAll(it, f), it)
+    }
+
+    const { offset, limit } = q
+    if (offset) {
+      let i = 0
+      it = filter(it, () => i++ >= offset)
+    }
+
+    if (limit) {
+      it = take(it, limit)
+    }
+
+    return it
+  }
+
+  /**
+   * @param {object} opts
+   * @param {boolean} opts.values
+   * @param {string} [opts.prefix]
+   * @returns {AsyncIterable<Pair>}
+   */
+  _query (opts) {
+    const iteratorOpts = {
+      keys: true,
+      keyAsBuffer: true,
+      values: opts.values
+    }
+
+    // Let the db do the prefix matching
+    if (opts.prefix != null) {
+      const prefix = opts.prefix.toString()
+      // Match keys greater than or equal to `prefix` and
+      // @ts-ignore
+      iteratorOpts.gte = prefix
+      // less than `prefix` + \xFF (hex escape sequence)
+      // @ts-ignore
+      iteratorOpts.lt = prefix + '\xFF'
+    }
+
+    return levelIteratorToIterator(this.db.iterator(iteratorOpts))
   }
 }
 
