@@ -47,7 +47,7 @@
     "it-filter": "^1.0.2",
     "it-map": "^1.0.5",
     "it-take": "^1.0.1",
-    "level": "^6.0.1"
+    "level": "^7.0.0"
   },
   "devDependencies": {
     "aegir": "^33.1.0",
