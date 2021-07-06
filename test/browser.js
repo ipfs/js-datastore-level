@@ -10,7 +10,7 @@ const LevelStore = require('../src')
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
     // @ts-ignore
-    require('interface-datastore/src/tests')({
+    require('interface-datastore-tests')({
       setup: () => new LevelStore('hello', { db: leveljs }),
       teardown: () => new Promise((resolve, reject) => {
         // @ts-ignore
@@ -24,7 +24,7 @@ describe('LevelDatastore', () => {
 
   describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
     // @ts-ignore
-    require('interface-datastore/src/tests')({
+    require('interface-datastore-tests')({
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),

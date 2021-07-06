@@ -43,7 +43,7 @@ describe('LevelDatastore', () => {
   ;[levelmem, level].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
       // @ts-ignore
-      require('interface-datastore/src/tests')({
+      require('interface-datastore-tests')({
         setup: () => new LevelStore(utils.tmpdir(), { db: database }),
         teardown () {}
       })

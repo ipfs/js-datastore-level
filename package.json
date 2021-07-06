@@ -42,8 +42,8 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "^4.0.0",
-    "interface-datastore": "^4.0.0",
+    "datastore-core": "^5.0.0",
+    "interface-datastore": "^5.1.1",
     "it-filter": "^1.0.2",
     "it-map": "^1.0.5",
     "it-take": "^1.0.1",
@@ -54,6 +54,7 @@
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "cids": "^1.1.5",
+    "interface-datastore-tests": "^1.0.0",
     "level-mem": "^5.0.1",
     "rimraf": "^3.0.0",
     "util": "^0.12.3"

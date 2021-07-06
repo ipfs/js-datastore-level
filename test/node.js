@@ -13,7 +13,7 @@ const childProcess = require('child_process')
 // @ts-ignore
 const level = require('level')
 // @ts-ignore
-const tests = require('interface-datastore/src/tests')
+const tests = require('interface-datastore-tests')
 
 const LevelStore = require('../src')
 
