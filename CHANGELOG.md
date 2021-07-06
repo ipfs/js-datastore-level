@@ -1,3 +1,17 @@
+# [6.0.0](https://github.com/ipfs/js-datastore-level/compare/v5.0.1...v6.0.0) (2021-07-06)
+
+
+### chore
+
+* update deps ([7e20056](https://github.com/ipfs/js-datastore-level/commit/7e20056b13db55e74c5fde986ec9afe186bba414))
+
+
+### BREAKING CHANGES
+
+* uses new interface-datastore interfaces
+
+
+
 ## [5.0.1](https://github.com/ipfs/js-datastore-level/compare/v5.0.0...v5.0.1) (2021-04-19)
 
 
