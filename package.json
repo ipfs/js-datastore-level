@@ -15,7 +15,7 @@
     "test:browser": "aegir test -t browser",
     "test:webworker": "aegir test -t webworker",
     "prepare": "aegir build --no-bundle",
-    "lint": "aegir lint",
+    "lint": "aegir ts -p check && aegir lint",
     "release": "aegir release",
     "release-minor": "aegir release --type minor",
     "release-major": "aegir release --type major",
@@ -50,12 +50,13 @@
     "level": "^7.0.0"
   },
   "devDependencies": {
-    "aegir": "^33.1.0",
+    "@ipld/dag-cbor": "^6.0.5",
+    "aegir": "^33.2.4",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
-    "cids": "^1.1.5",
     "interface-datastore-tests": "^1.0.0",
     "level-mem": "^5.0.1",
+    "multiformats": "^9.2.0",
     "rimraf": "^3.0.0",
     "util": "^0.12.3"
   },
