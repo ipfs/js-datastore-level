@@ -7,7 +7,9 @@ const { Key, utils } = require('interface-datastore')
 // @ts-ignore
 const rimraf = require('rimraf')
 const { MountDatastore } = require('datastore-core')
-const CID = require('cids')
+const { CID } = require('multiformats/cid')
+const Digest = require('multiformats/hashes/digest')
+const dagCbor = require('@ipld/dag-cbor')
 const { promisify } = require('util')
 const childProcess = require('child_process')
 // @ts-ignore
@@ -66,7 +68,7 @@ describe('LevelDatastore', () => {
     const cids = []
 
     for await (const e of store.query({})) {
-      cids.push(new CID(1, 'dag-cbor', e.key.uint8Array()))
+      cids.push(CID.createV1(dagCbor.code, Digest.decode(e.key.uint8Array())))
     }
 
     expect(cids[0].version).to.be.eql(0)
