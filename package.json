@@ -50,10 +50,9 @@
     "level": "^7.0.0"
   },
   "devDependencies": {
-    "aegir": "^33.1.0",
+    "aegir": "^34.0.2",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
-    "cids": "^1.1.5",
     "interface-datastore-tests": "^1.0.0",
     "level-mem": "^5.0.1",
     "rimraf": "^3.0.0",
