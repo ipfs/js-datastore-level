@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@ipld/dag-cbor": "^6.0.5",
-    "aegir": "^33.2.4",
+    "aegir": "^34.0.3",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "interface-datastore-tests": "^1.0.0",
