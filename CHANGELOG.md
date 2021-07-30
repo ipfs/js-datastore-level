@@ -1,3 +1,12 @@
+## [6.0.2](https://github.com/ipfs/js-datastore-level/compare/v6.0.1...v6.0.2) (2021-07-30)
+
+
+### Features
+
+* add level options ([#82](https://github.com/ipfs/js-datastore-level/issues/82)) ([1a3e060](https://github.com/ipfs/js-datastore-level/commit/1a3e060d12bcebc8b5bdc8123d03b23bbc13de59))
+
+
+
 ## [6.0.1](https://github.com/ipfs/js-datastore-level/compare/v6.0.0...v6.0.1) (2021-07-10)
 
 
