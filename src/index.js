@@ -31,6 +31,14 @@ class LevelDatastore extends Adapter {
    * @param {any} [opts.db] - level db reference
    * @param {boolean} [opts.createIfMissing]
    * @param {boolean} [opts.errorIfExists]
+   * @param {string} [opts.prefix] - level-js option
+   * @param {number} [opts.version] - level-js option
+   * @param {number} [opts.cacheSize] - leveldown option
+   * @param {number} [opts.writeBufferSize] - leveldown option
+   * @param {number} [opts.blockSize] - leveldown option
+   * @param {number} [opts.maxOpenFiles] - leveldown option
+   * @param {number} [opts.blockRestartInterval] - leveldown option
+   * @param {number} [opts.maxFileSize] - leveldown option
    */
   constructor (path, opts) {
     super()
