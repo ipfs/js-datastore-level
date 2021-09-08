@@ -1,13 +1,14 @@
-'use strict'
-
-const { utils, Key } = require('interface-datastore')
-const LevelStore = require('../../src')
+import { Key } from 'interface-datastore/key'
+import { LevelDatastore } from '../../src/index.js'
+import tempdir from 'ipfs-utils/src/temp-dir.js'
+// @ts-ignore no types
+import Level from 'level'
 
 async function testLevelIteratorDestroy () {
   // @ts-ignore
-  const store = new LevelStore(utils.tmpdir(), { db: require('level') })
+  const store = new LevelDatastore(tempdir(), { db: Level })
   await store.open()
-  await store.put(new Key(`/test/key${Date.now()}`), Buffer.from(`TESTDATA${Date.now()}`))
+  await store.put(new Key(`/test/key${Date.now()}`), new TextEncoder().encode(`TESTDATA${Date.now()}`))
   for await (const d of store.query({})) {
     console.log(d) // eslint-disable-line no-console
   }
