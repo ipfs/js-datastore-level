@@ -1,17 +1,16 @@
 /* eslint-env mocha */
-'use strict'
 
-const { MountDatastore } = require('datastore-core')
-const { Key } = require('interface-datastore')
+import { MountDatastore } from 'datastore-core'
+import { Key } from 'interface-datastore/key'
 // @ts-ignore
-const leveljs = require('level')
-const LevelStore = require('../src')
+import leveljs from 'level'
+import { LevelDatastore } from '../src/index.js'
+import { interfaceDatastoreTests } from 'interface-datastore-tests'
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
-    // @ts-ignore
-    require('interface-datastore-tests')({
-      setup: () => new LevelStore('hello', { db: leveljs }),
+    interfaceDatastoreTests({
+      setup: () => new LevelDatastore('hello', { db: leveljs }),
       teardown: () => new Promise((resolve, reject) => {
         // @ts-ignore
         leveljs.destroy('hello', err => {
@@ -23,18 +22,17 @@ describe('LevelDatastore', () => {
   })
 
   describe('interface-datastore (mount(leveljs, leveljs, leveljs))', () => {
-    // @ts-ignore
-    require('interface-datastore-tests')({
+    interfaceDatastoreTests({
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),
-          datastore: new LevelStore('one', { db: leveljs })
+          datastore: new LevelDatastore('one', { db: leveljs })
         }, {
           prefix: new Key('/q'),
-          datastore: new LevelStore('two', { db: leveljs })
+          datastore: new LevelDatastore('two', { db: leveljs })
         }, {
           prefix: new Key('/z'),
-          datastore: new LevelStore('three', { db: leveljs })
+          datastore: new LevelDatastore('three', { db: leveljs })
         }])
       },
       teardown () {

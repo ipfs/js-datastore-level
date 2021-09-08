@@ -1,14 +1,11 @@
-'use strict'
-
-const {
-  Key, Errors, Adapter,
-  utils: {
-    sortAll
-  }
-} = require('interface-datastore')
-const filter = require('it-filter')
-const map = require('it-map')
-const take = require('it-take')
+import { Key } from 'interface-datastore'
+import { BaseDatastore, Errors } from 'datastore-core'
+import filter from 'it-filter'
+import map from 'it-map'
+import take from 'it-take'
+import sort from 'it-sort'
+// @ts-ignore no types
+import Level from 'level'
 
 /**
  * @typedef {import('interface-datastore').Datastore} Datastore
@@ -24,7 +21,7 @@ const take = require('it-take')
  *
  * @implements {Datastore}
  */
-class LevelDatastore extends Adapter {
+export class LevelDatastore extends BaseDatastore {
   /**
    * @param {any} path
    * @param {Object} [opts]
@@ -50,7 +47,7 @@ class LevelDatastore extends Adapter {
       delete opts.db
     } else {
       // @ts-ignore
-      this.database = require('level')
+      this.database = Level
     }
   }
 
@@ -183,7 +180,7 @@ class LevelDatastore extends Adapter {
     }
 
     if (Array.isArray(q.orders)) {
-      it = q.orders.reduce((it, f) => sortAll(it, f), it)
+      it = q.orders.reduce((it, f) => sort(it, f), it)
     }
 
     const { offset, limit } = q
@@ -213,7 +210,7 @@ class LevelDatastore extends Adapter {
     }
 
     if (Array.isArray(q.orders)) {
-      it = q.orders.reduce((it, f) => sortAll(it, f), it)
+      it = q.orders.reduce((it, f) => sort(it, f), it)
     }
 
     const { offset, limit } = q
@@ -293,5 +290,3 @@ function levelIteratorToIterator (li) {
     }
   }
 }
-
-module.exports = LevelDatastore

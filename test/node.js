@@ -1,55 +1,53 @@
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
-const path = require('path')
-const { Key, utils } = require('interface-datastore')
+import { expect } from 'aegir/utils/chai.js'
+import path from 'path'
+import { Key } from 'interface-datastore/key'
+import rimraf from 'rimraf'
+import { MountDatastore } from 'datastore-core'
+import { CID } from 'multiformats/cid'
+import * as Digest from 'multiformats/hashes/digest'
+import * as dagCbor from '@ipld/dag-cbor'
+import { promisify } from 'util'
+import childProcess from 'child_process'
 // @ts-ignore
-const rimraf = require('rimraf')
-const { MountDatastore } = require('datastore-core')
-const { CID } = require('multiformats/cid')
-const Digest = require('multiformats/hashes/digest')
-const dagCbor = require('@ipld/dag-cbor')
-const { promisify } = require('util')
-const childProcess = require('child_process')
+import level from 'level'
 // @ts-ignore
-const level = require('level')
-// @ts-ignore
-const tests = require('interface-datastore-tests')
-
-const LevelStore = require('../src')
+import { interfaceDatastoreTests } from 'interface-datastore-tests'
+import { LevelDatastore } from '../src/index.js'
+import tempdir from 'ipfs-utils/src/temp-dir.js'
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
-    const dir = utils.tmpdir()
-    tests({
-      setup: () => new LevelStore(dir, { db: level }),
+    const dir = tempdir()
+    interfaceDatastoreTests({
+      setup: () => new LevelDatastore(dir, { db: level }),
       teardown: () => promisify(rimraf)(dir)
     })
   })
 
   describe('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
     const dirs = [
-      utils.tmpdir(),
-      utils.tmpdir(),
-      utils.tmpdir()
+      tempdir(),
+      tempdir(),
+      tempdir()
     ]
 
-    tests({
+    interfaceDatastoreTests({
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),
-          datastore: new LevelStore(dirs[0], {
+          datastore: new LevelDatastore(dirs[0], {
             db: level
           })
         }, {
           prefix: new Key('/q'),
-          datastore: new LevelStore(dirs[1], {
+          datastore: new LevelDatastore(dirs[1], {
             db: level
           })
         }, {
           prefix: new Key('/z'),
-          datastore: new LevelStore(dirs[2], {
+          datastore: new LevelDatastore(dirs[2], {
             db: level
           })
         }])
@@ -61,7 +59,7 @@ describe('LevelDatastore', () => {
   })
 
   it.skip('interop with go', async () => {
-    const store = new LevelStore(path.join(__dirname, 'test-repo', 'datastore'), {
+    const store = new LevelDatastore(path.join(__dirname, 'test-repo', 'datastore'), {
       db: level
     })
 
@@ -91,7 +89,7 @@ describe('LevelDatastore', () => {
   //
   // https://github.com/Level/leveldown/blob/d3453fbde4d2a8aa04d9091101c25c999649069b/binding.cc#L545
   it('should not leave iterators open and leak memory', (done) => {
-    const cp = childProcess.fork(path.join(__dirname, '/fixtures/test-level-iterator-destroy'), { stdio: 'pipe' })
+    const cp = childProcess.fork(path.join(process.cwd(), '/test/fixtures/test-level-iterator-destroy'), { stdio: 'pipe' })
 
     let out = ''
     const { stdout, stderr } = cp

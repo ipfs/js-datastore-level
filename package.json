@@ -4,23 +4,28 @@
   "description": "Datastore implementation with level(up|down) backend",
   "leadMaintainer": "Pedro Teixeira <pedro@protocol.ai>",
   "main": "src/index.js",
-  "types": "dist/src/index.d.ts",
+  "type": "module",
+  "types": "types/index.d.ts",
   "files": [
-    "src",
-    "dist"
+    "*",
+    "!**/*.tsbuildinfo"
   ],
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
   "scripts": {
-    "test": "aegir test",
-    "test:node": "aegir test -t node",
-    "test:browser": "aegir test -t browser",
-    "test:webworker": "aegir test -t webworker",
-    "prepare": "aegir build --no-bundle",
+    "clean": "rimraf dist types",
+    "prepare": "aegir build --no-bundle && cp -R types dist",
     "lint": "aegir ts -p check && aegir lint",
-    "release": "aegir release",
-    "release-minor": "aegir release --type minor",
-    "release-major": "aegir release --type major",
-    "coverage": "nyc -s npm run test:node && nyc report --reporter=html",
-    "dep-check": "aegir dep-check"
+    "build": "aegir build",
+    "release": "aegir release --target node",
+    "release-minor": "aegir release --type minor --target node",
+    "release-major": "aegir release --type major --target node",
+    "pretest": "aegir build --esm-tests",
+    "test": "aegir test",
+    "dep-check": "aegir dep-check -i rimraf"
   },
   "repository": {
     "type": "git",
@@ -42,26 +47,32 @@
   },
   "homepage": "https://github.com/ipfs/js-datastore-level#readme",
   "dependencies": {
-    "datastore-core": "^5.0.0",
-    "interface-datastore": "^5.1.1",
+    "datastore-core": "^6.0.5",
+    "interface-datastore": "^6.0.2",
     "it-filter": "^1.0.2",
     "it-map": "^1.0.5",
+    "it-sort": "^1.0.0",
     "it-take": "^1.0.1",
     "level": "^7.0.0"
   },
   "devDependencies": {
     "@ipld/dag-cbor": "^6.0.5",
-    "aegir": "^33.2.4",
+    "@types/rimraf": "^3.0.2",
+    "aegir": "^35.0.3",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
-    "interface-datastore-tests": "^1.0.0",
+    "interface-datastore-tests": "^2.0.3",
+    "ipfs-utils": "^8.1.6",
     "level-mem": "^5.0.1",
     "multiformats": "^9.2.0",
     "rimraf": "^3.0.0",
     "util": "^0.12.3"
   },
   "eslintConfig": {
-    "extends": "ipfs"
+    "extends": "ipfs",
+    "parserOptions": {
+      "sourceType": "module"
+    }
   },
   "contributors": [
     "achingbrain <alex@achingbrain.net>",

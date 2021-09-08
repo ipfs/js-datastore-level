@@ -1,4 +1,4 @@
-# js-datastore-level
+# js-datastore-level <!-- omit in toc -->
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
@@ -14,21 +14,18 @@
 
 > Datastore implementation with [levelup](https://github.com/level/levelup) backend.
 
-## Lead Maintainer
+## Lead Maintainer <!-- omit in toc -->
 
 [Alex Potsides](https://github.com/achingbrain)
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-- [js-datastore-level](#js-datastore-level)
-  - [Lead Maintainer](#Lead-Maintainer)
-  - [Table of Contents](#Table-of-Contents)
-  - [Install](#Install)
-  - [Usage](#Usage)
-    - [Browser Shimming Leveldown](#Browser-Shimming-Leveldown)
-    - [Database names](#Database-names)
-  - [Contribute](#Contribute)
-  - [License](#License)
+- [Install](#install)
+- [Usage](#usage)
+  - [Browser Shimming Leveldown](#browser-shimming-leveldown)
+  - [Database names](#database-names)
+- [Contribute](#contribute)
+- [License](#license)
 
 ## Install
 
@@ -39,13 +36,13 @@ $ npm install datastore-level
 ## Usage
 
 ```js
-const LevelStore = require('datastore-level')
+import { LevelDatastore } from 'datastore-level'
 
 // Default using level as backend for node or the browser
-const store = new LevelStore('path/to/store')
+const store = new LevelDatastore('path/to/store')
 
 // another leveldown compliant backend like memdown
-const memStore = new LevelStore('my/mem/store', {
+const memStore = new LevelDatastore('my/mem/store', {
   db: require('level-mem')
 })
 ```
@@ -61,8 +58,8 @@ If you are using a bundler that does not support `pkg.browser`, you will need to
 `level-js@3` changed the database prefix from `IDBWrapper-` to `level-js-`, so please specify the old prefix if you wish to continue using databases created using `datastore-level` prior to `v0.12.0`.  E.g.
 
 ```javascript
-const leveljs = require('level-js')
-const browserStore = new LevelStore('my/db/name', {
+import leveljs from 'level-js'
+import browserStore = new LevelDatastore('my/db/name', {
   db: (path) => leveljs(path, {
     prefix: 'IDBWrapper-'
   })

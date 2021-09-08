@@ -1,18 +1,18 @@
 /* eslint-env mocha */
-'use strict'
 
-const { expect } = require('aegir/utils/chai')
+import { expect } from 'aegir/utils/chai.js'
 // @ts-ignore
-const levelmem = require('level-mem')
+import levelmem from 'level-mem'
 // @ts-ignore
-const level = require('level')
-const LevelStore = require('../src')
-const { utils } = require('interface-datastore')
+import level from 'level'
+import { LevelDatastore } from '../src/index.js'
+import tempdir from 'ipfs-utils/src/temp-dir.js'
+import { interfaceDatastoreTests } from 'interface-datastore-tests'
 
 describe('LevelDatastore', () => {
   describe('initialization', () => {
     it('should default to a leveldown database', async () => {
-      const levelStore = new LevelStore('init-default')
+      const levelStore = new LevelDatastore('init-default')
       await levelStore.open()
 
       expect(levelStore.db.options).to.include({
@@ -25,7 +25,7 @@ describe('LevelDatastore', () => {
     })
 
     it('should be able to override the database', async () => {
-      const levelStore = new LevelStore('init-default', {
+      const levelStore = new LevelDatastore('init-default', {
         db: levelmem,
         createIfMissing: true,
         errorIfExists: true
@@ -42,9 +42,8 @@ describe('LevelDatastore', () => {
 
   ;[levelmem, level].forEach(database => {
     describe(`interface-datastore ${database.name}`, () => {
-      // @ts-ignore
-      require('interface-datastore-tests')({
-        setup: () => new LevelStore(utils.tmpdir(), { db: database }),
+      interfaceDatastoreTests({
+        setup: () => new LevelDatastore(tempdir(), { db: database }),
         teardown () {}
       })
     })
