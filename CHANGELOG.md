@@ -1,3 +1,17 @@
+# [7.0.0](https://github.com/ipfs/js-datastore-level/compare/v6.0.2...v7.0.0) (2021-09-08)
+
+
+### chore
+
+* switch to ESM ([#87](https://github.com/ipfs/js-datastore-level/issues/87)) ([798e995](https://github.com/ipfs/js-datastore-level/commit/798e9958967c2fc279110eebe75e78523560f903))
+
+
+### BREAKING CHANGES
+
+* deep imports/requires are no longer possible
+
+
+
 ## [6.0.2](https://github.com/ipfs/js-datastore-level/compare/v6.0.1...v6.0.2) (2021-07-30)
 
 
