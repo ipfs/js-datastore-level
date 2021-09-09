@@ -1,3 +1,7 @@
+## [7.0.1](https://github.com/ipfs/js-datastore-level/compare/v7.0.0...v7.0.1) (2021-09-09)
+
+
+
 # [7.0.0](https://github.com/ipfs/js-datastore-level/compare/v6.0.2...v7.0.0) (2021-09-08)
 
 
