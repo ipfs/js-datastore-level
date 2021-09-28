@@ -62,7 +62,7 @@
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "interface-datastore-tests": "^2.0.3",
-    "ipfs-utils": "^8.1.6",
+    "ipfs-utils": "^9.0.2",
     "level-mem": "^5.0.1",
     "multiformats": "^9.2.0",
     "rimraf": "^3.0.0",
