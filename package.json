@@ -63,7 +63,7 @@
     "buffer": "^6.0.3",
     "interface-datastore-tests": "^2.0.3",
     "ipfs-utils": "^8.1.6",
-    "level-mem": "^5.0.1",
+    "level-mem": "^6.0.1",
     "multiformats": "^9.2.0",
     "rimraf": "^3.0.0",
     "util": "^0.12.3"
