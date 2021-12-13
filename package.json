@@ -56,7 +56,7 @@
     "level": "^7.0.0"
   },
   "devDependencies": {
-    "@ipld/dag-cbor": "^6.0.5",
+    "@ipld/dag-cbor": "^7.0.0",
     "@types/rimraf": "^3.0.2",
     "aegir": "^35.0.3",
     "assert": "^2.0.0",
