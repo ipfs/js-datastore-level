@@ -58,7 +58,7 @@
   "devDependencies": {
     "@ipld/dag-cbor": "^6.0.5",
     "@types/rimraf": "^3.0.2",
-    "aegir": "^35.0.3",
+    "aegir": "^36.1.3",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "interface-datastore-tests": "^2.0.3",
