@@ -1,3 +1,14 @@
+## [8.0.0](https://github.com/ipfs/js-datastore-level/compare/v7.0.1...v8.0.0) (2022-01-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* updates project config to use unified ci
+
+### Trivial Changes
+
+* switch to unified ci ([#99](https://github.com/ipfs/js-datastore-level/issues/99)) ([8344486](https://github.com/ipfs/js-datastore-level/commit/8344486d6971e0b2f49ceaa6dbc63f6469e8ed12))
+
 ## [7.0.1](https://github.com/ipfs/js-datastore-level/compare/v7.0.0...v7.0.1) (2021-09-09)
 
 
@@ -271,6 +282,3 @@
 
 * key handling ([682f8b3](https://github.com/ipfs/js-datastore-level/commit/682f8b3))
 * working interop with go ([f5e03c6](https://github.com/ipfs/js-datastore-level/commit/f5e03c6))
-
-
-
