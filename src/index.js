@@ -78,7 +78,7 @@ export class LevelDatastore extends BaseDatastore {
       } else {
         this.db = await this._initDb()
       }
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       throw Errors.dbOpenFailedError(err)
     }
   }
@@ -90,7 +90,7 @@ export class LevelDatastore extends BaseDatastore {
   async put (key, value) {
     try {
       await this.db.put(key.toString(), value)
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       throw Errors.dbWriteFailedError(err)
     }
   }
@@ -103,7 +103,7 @@ export class LevelDatastore extends BaseDatastore {
     let data
     try {
       data = await this.db.get(key.toString())
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       if (err.notFound) throw Errors.notFoundError(err)
       throw Errors.dbWriteFailedError(err)
     }
@@ -117,7 +117,7 @@ export class LevelDatastore extends BaseDatastore {
   async has (key) {
     try {
       await this.db.get(key.toString())
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       if (err.notFound) return false
       throw err
     }
@@ -131,7 +131,7 @@ export class LevelDatastore extends BaseDatastore {
   async delete (key) {
     try {
       await this.db.del(key.toString())
-    } catch (err) {
+    } catch (/** @type {any} */ err) {
       throw Errors.dbDeleteFailedError(err)
     }
   }

@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://ipfs.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-[![Build Status](https://flat.badgen.net/travis/ipfs/js-datastore-level)](https://travis-ci.com/ipfs/js-datastore-level)
+[![Build Status](https://github.com/ipfs/js-datastore-level/actions/workflows/js-test-and-release.yml/badge.svg?branch=master)](https://github.com/ipfs/js-datastore-level/actions/workflows/js-test-and-release.yml)
 [![Codecov](https://codecov.io/gh/ipfs/js-datastore-level/branch/master/graph/badge.svg)](https://codecov.io/gh/ipfs/js-datastore-level)
 [![Dependency Status](https://david-dm.org/ipfs/js-datastore-level.svg?style=flat-square)](https://david-dm.org/ipfs/js-datastore-level)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
@@ -13,10 +13,6 @@
 
 
 > Datastore implementation with [levelup](https://github.com/level/levelup) backend.
-
-## Lead Maintainer <!-- omit in toc -->
-
-[Alex Potsides](https://github.com/achingbrain)
 
 ## Table of Contents <!-- omit in toc -->
 
