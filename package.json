@@ -164,7 +164,7 @@
     "it-map": "^1.0.5",
     "it-sort": "^1.0.0",
     "it-take": "^1.0.1",
-    "level": "^7.0.0"
+    "level": "^8.0.0"
   },
   "devDependencies": {
     "@ipld/dag-cbor": "^7.0.0",
