@@ -25,27 +25,33 @@
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
   },
-  "main": "src/index.js",
   "type": "module",
-  "types": "types/src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "typesVersions": {
     "*": {
       "*": [
-        "types/*",
-        "types/src/*"
+        "*",
+        "dist/*",
+        "dist/src/*",
+        "dist/src/*/index"
       ],
-      "types/*": [
-        "types/*",
-        "types/src/*"
+      "src/*": [
+        "*",
+        "dist/*",
+        "dist/src/*",
+        "dist/src/*/index"
       ]
     }
   },
   "files": [
-    "*",
+    "src",
+    "dist",
+    "!dist/test",
     "!**/*.tsbuildinfo"
   ],
   "exports": {
     ".": {
+      "types": "./dist/src/index.d.ts",
       "import": "./src/index.js"
     }
   },
@@ -82,15 +88,15 @@
               "release": "patch"
             },
             {
-              "type": "chore",
-              "release": "patch"
-            },
-            {
               "type": "docs",
               "release": "patch"
             },
             {
               "type": "test",
+              "release": "patch"
+            },
+            {
+              "type": "deps",
               "release": "patch"
             },
             {
@@ -120,7 +126,11 @@
               },
               {
                 "type": "docs",
-                "section": "Trivial Changes"
+                "section": "Documentation"
+              },
+              {
+                "type": "deps",
+                "section": "Dependencies"
               },
               {
                 "type": "test",
@@ -131,52 +141,44 @@
         }
       ],
       "@semantic-release/changelog",
-      [
-        "@semantic-release/npm",
-        {
-          "pkgRoot": "dist"
-        }
-      ],
+      "@semantic-release/npm",
       "@semantic-release/github",
       "@semantic-release/git"
     ]
   },
   "scripts": {
-    "clean": "rimraf dist types",
-    "prepare": "aegir build --no-bundle && cp -R types dist",
-    "lint": "aegir ts -p check && aegir lint",
-    "build": "aegir build --esm-tests",
-    "release": "semantic-release",
+    "clean": "aegir clean",
+    "lint": "aegir lint",
+    "build": "aegir build",
+    "release": "aegir release",
     "test": "aegir test",
-    "test:node": "aegir test -t node",
-    "test:chrome": "aegir test -t browser",
+    "test:node": "aegir test -t node --cov",
+    "test:chrome": "aegir test -t browser --cov",
     "test:chrome-webworker": "aegir test -t webworker",
     "test:firefox": "aegir test -t browser -- --browser firefox",
     "test:firefox-webworker": "aegir test -t webworker -- --browser firefox",
-    "test:electron-main": "aegir test -t electron-main -f dist/cjs/node-test/*js",
-    "test:electron-renderer": "aegir test -t electron-renderer -f dist/cjs/node-test/*js",
-    "dep-check": "aegir dep-check -i rimraf"
+    "test:electron-main": "aegir test -t electron-main",
+    "dep-check": "aegir dep-check"
   },
   "dependencies": {
-    "datastore-core": "^7.0.0",
-    "interface-datastore": "^6.0.2",
+    "abstract-level": "^1.0.3",
+    "datastore-core": "^8.0.1",
+    "interface-datastore": "^7.0.0",
     "it-filter": "^1.0.2",
     "it-map": "^1.0.5",
     "it-sort": "^1.0.0",
     "it-take": "^1.0.1",
-    "level": "^7.0.0"
+    "level": "^8.0.0"
   },
   "devDependencies": {
     "@ipld/dag-cbor": "^7.0.0",
     "@types/rimraf": "^3.0.2",
-    "aegir": "^36.1.3",
-    "assert": "^2.0.0",
-    "buffer": "^6.0.3",
-    "interface-datastore-tests": "^2.0.3",
+    "aegir": "^37.5.1",
+    "interface-datastore-tests": "^3.0.0",
     "ipfs-utils": "^9.0.4",
     "level-mem": "^6.0.1",
+    "memory-level": "^1.0.0",
     "multiformats": "^9.2.0",
-    "rimraf": "^3.0.0",
-    "util": "^0.12.3"
+    "rimraf": "^3.0.2"
   }
 }

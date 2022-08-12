@@ -4,8 +4,7 @@ import filter from 'it-filter'
 import map from 'it-map'
 import take from 'it-take'
 import sort from 'it-sort'
-// @ts-ignore no types
-import Level from 'level'
+import { Level } from 'level'
 
 /**
  * @typedef {import('interface-datastore').Datastore} Datastore
@@ -14,70 +13,33 @@ import Level from 'level'
  * @typedef {import('interface-datastore').Query} Query
  * @typedef {import('interface-datastore').KeyQuery} KeyQuery
  * @typedef {import('interface-datastore').Options} QueryOptions
+ * @typedef {import('abstract-level').AbstractLevel<any, string, Uint8Array>} LevelDb
  */
 
 /**
- * A datastore backed by leveldb.
- *
- * @implements {Datastore}
+ * A datastore backed by leveldb
  */
 export class LevelDatastore extends BaseDatastore {
   /**
-   * @param {any} path
-   * @param {Object} [opts]
-   * @param {any} [opts.db] - level db reference
-   * @param {boolean} [opts.createIfMissing]
-   * @param {boolean} [opts.errorIfExists]
-   * @param {string} [opts.prefix] - level-js option
-   * @param {number} [opts.version] - level-js option
-   * @param {number} [opts.cacheSize] - leveldown option
-   * @param {number} [opts.writeBufferSize] - leveldown option
-   * @param {number} [opts.blockSize] - leveldown option
-   * @param {number} [opts.maxOpenFiles] - leveldown option
-   * @param {number} [opts.blockRestartInterval] - leveldown option
-   * @param {number} [opts.maxFileSize] - leveldown option
+   * @param {string | LevelDb} path
+   * @param {import('level').DatabaseOptions<string, Uint8Array>} [opts]
    */
-  constructor (path, opts) {
+  constructor (path, opts = {}) {
     super()
-    this.path = path
-    this.opts = opts
 
-    if (opts && opts.db) {
-      this.database = opts.db
-      delete opts.db
-    } else {
-      // @ts-ignore
-      this.database = Level
-    }
-  }
-
-  _initDb () {
-    return new Promise((resolve, reject) => {
-      this.db = this.database(
-        this.path,
-        {
-          ...this.opts,
-          valueEncoding: 'binary',
-          compression: false // same default as go
-        },
-        /** @param {Error}  [err] */
-        (err) => {
-          if (err) {
-            return reject(err)
-          }
-          resolve(this.db)
-        }
-      )
-    })
+    /** @type {LevelDb} */
+    this.db = typeof path === 'string'
+      ? new Level(path, {
+        ...opts,
+        keyEncoding: 'utf8',
+        valueEncoding: 'view'
+      })
+      : path
   }
 
   async open () {
     try {
-      if (this.db) {
-        await this.db.open()
-      } else {
-        this.db = await this._initDb()
-      }
+      await this.db.open()
     } catch (/** @type {any} */ err) {
       throw Errors.dbOpenFailedError(err)
     }
@@ -144,7 +106,7 @@ export class LevelDatastore extends BaseDatastore {
    * @returns {Batch}
    */
   batch () {
-    /** @type {{ type: string; key: string; value?: Uint8Array; }[]} */
+    /** @type {Array<{ type: 'put', key: string, value: Uint8Array; } | { type: 'del', key: string }>} */
     const ops = []
     return {
       put: (key, value) => {
@@ -233,9 +195,10 @@ export class LevelDatastore extends BaseDatastore {
    * @returns {AsyncIterable<Pair>}
    */
   _query (opts) {
+    /** @type {import('level').IteratorOptions<string, Uint8Array>} */
     const iteratorOpts = {
       keys: true,
-      keyAsBuffer: true,
+      keyEncoding: 'buffer',
       values: opts.values
     }
 
@@ -243,10 +206,8 @@ export class LevelDatastore extends BaseDatastore {
     if (opts.prefix != null) {
       const prefix = opts.prefix.toString()
       // Match keys greater than or equal to `prefix` and
-      // @ts-ignore
       iteratorOpts.gte = prefix
       // less than `prefix` + \xFF (hex escape sequence)
-      // @ts-ignore
       iteratorOpts.lt = prefix + '\xFF'
     }
 
@@ -255,38 +216,13 @@ export class LevelDatastore extends BaseDatastore {
 }
 
 /**
- * @typedef {Object} LevelIterator
- * @property {(cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void} next
- * @property {(cb: (err: Error) => void) => void } end
- */
-
-/**
- * @param {LevelIterator} li - Level iterator
+ * @param {import('level').Iterator<LevelDb, string, Uint8Array>} li - Level iterator
  * @returns {AsyncIterable<Pair>}
  */
-function levelIteratorToIterator (li) {
-  return {
-    [Symbol.asyncIterator] () {
-      return {
-        next: () => new Promise((resolve, reject) => {
-          li.next((err, key, value) => {
-            if (err) return reject(err)
-            if (key == null) {
-              return li.end(err => {
-                if (err) return reject(err)
-                resolve({ done: true, value: undefined })
-              })
-            }
-            resolve({ done: false, value: { key: new Key(key, false), value } })
-          })
-        }),
-        return: () => new Promise((resolve, reject) => {
-          li.end(err => {
-            if (err) return reject(err)
-            resolve({ done: true, value: undefined })
-          })
-        })
-      }
-    }
+async function * levelIteratorToIterator (li) {
+  for await (const [key, value] of li) {
+    yield { key: new Key(key, false), value }
   }
+
+  await li.close()
 }

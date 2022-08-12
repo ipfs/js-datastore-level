@@ -1,12 +1,9 @@
 import { Key } from 'interface-datastore/key'
 import { LevelDatastore } from '../../src/index.js'
 import tempdir from 'ipfs-utils/src/temp-dir.js'
-// @ts-ignore no types
-import Level from 'level'
 
 async function testLevelIteratorDestroy () {
-  // @ts-ignore
-  const store = new LevelDatastore(tempdir(), { db: Level })
+  const store = new LevelDatastore(tempdir())
   await store.open()
   await store.put(new Key(`/test/key${Date.now()}`), new TextEncoder().encode(`TESTDATA${Date.now()}`))
   for await (const d of store.query({})) {
