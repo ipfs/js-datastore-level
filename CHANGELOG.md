@@ -1,3 +1,19 @@
+## [9.0.0](https://github.com/ipfs/js-datastore-level/compare/v8.0.0...v9.0.0) (2022-08-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* this module used to be published as ESM/CJS now it is just ESM
+
+### Features
+
+* publish as ESM only ([#131](https://github.com/ipfs/js-datastore-level/issues/131)) ([0d3b6ab](https://github.com/ipfs/js-datastore-level/commit/0d3b6ab61b23c20587059b01e5446d9638fb569b))
+
+
+### Trivial Changes
+
+* Update .github/workflows/stale.yml [skip ci] ([f5b456e](https://github.com/ipfs/js-datastore-level/commit/f5b456e022d2b00edad0d913bbcc517ce0b90218))
+
 ## [8.0.0](https://github.com/ipfs/js-datastore-level/compare/v7.0.1...v8.0.0) (2022-01-19)
 
 
