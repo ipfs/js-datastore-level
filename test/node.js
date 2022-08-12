@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-import { expect } from 'aegir/utils/chai.js'
+import { expect } from 'aegir/chai'
 import path from 'path'
 import { Key } from 'interface-datastore/key'
 import rimraf from 'rimraf'
@@ -10,9 +10,6 @@ import * as Digest from 'multiformats/hashes/digest'
 import * as dagCbor from '@ipld/dag-cbor'
 import { promisify } from 'util'
 import childProcess from 'child_process'
-// @ts-ignore
-import level from 'level'
-// @ts-ignore
 import { interfaceDatastoreTests } from 'interface-datastore-tests'
 import { LevelDatastore } from '../src/index.js'
 import tempdir from 'ipfs-utils/src/temp-dir.js'
@@ -21,7 +18,7 @@ describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
     const dir = tempdir()
     interfaceDatastoreTests({
-      setup: () => new LevelDatastore(dir, { db: level }),
+      setup: () => new LevelDatastore(dir),
       teardown: () => promisify(rimraf)(dir)
     })
   })
@@ -37,19 +34,13 @@ describe('LevelDatastore', () => {
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),
-          datastore: new LevelDatastore(dirs[0], {
-            db: level
-          })
+          datastore: new LevelDatastore(dirs[0])
         }, {
           prefix: new Key('/q'),
-          datastore: new LevelDatastore(dirs[1], {
-            db: level
-          })
+          datastore: new LevelDatastore(dirs[1])
         }, {
           prefix: new Key('/z'),
-          datastore: new LevelDatastore(dirs[2], {
-            db: level
-          })
+          datastore: new LevelDatastore(dirs[2])
         }])
       },
       teardown () {
@@ -59,9 +50,7 @@ describe('LevelDatastore', () => {
   })
 
   it.skip('interop with go', async () => {
-    const store = new LevelDatastore(path.join(__dirname, 'test-repo', 'datastore'), {
-      db: level
-    })
+    const store = new LevelDatastore(path.join(__dirname, 'test-repo', 'datastore'))
 
     const cids = []
 
