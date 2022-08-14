@@ -22,7 +22,7 @@ import { Level } from 'level'
 export class LevelDatastore extends BaseDatastore {
   /**
    * @param {string | LevelDb} path
-   * @param {import('level').DatabaseOptions<string, Uint8Array>} [opts]
+   * @param {import('level').DatabaseOptions<string, Uint8Array> & import('level').OpenOptions} [opts]
    */
   constructor (path, opts = {}) {
     super()
@@ -35,11 +35,18 @@ export class LevelDatastore extends BaseDatastore {
         valueEncoding: 'view'
       })
       : path
+
+    /** @type {import('level').OpenOptions} */
+    this.opts = {
+      createIfMissing: true,
+      compression: false, // same default as go
+      ...opts
+    }
   }
 
   async open () {
     try {
-      await this.db.open()
+      await this.db.open(this.opts)
     } catch (/** @type {any} */ err) {
       throw Errors.dbOpenFailedError(err)
     }
@@ -211,7 +218,19 @@ export class LevelDatastore extends BaseDatastore {
       iteratorOpts.lt = prefix + '\xFF'
     }
 
-    return levelIteratorToIterator(this.db.iterator(iteratorOpts))
+    const iterator = this.db.iterator(iteratorOpts)
+
+    if (iterator[Symbol.asyncIterator]) {
+      return levelIteratorToIterator(iterator)
+    }
+
+    // @ts-expect-error support older level
+    if (iterator.next != null && iterator.end != null) {
+      // @ts-expect-error support older level
+      return oldLevelIteratorToIterator(iterator)
+    }
+
+    throw new Error('Level returned incompatible iterator')
   }
 }
 
@@ -225,4 +244,41 @@ async function * levelIteratorToIterator (li) {
   }
 
   await li.close()
+}
+
+/**
+ * @typedef {object} LevelIterator
+ * @property {(cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void} next
+ * @property {(cb: (err: Error) => void) => void } end
+ */
+
+/**
+ * @param {LevelIterator} li - Level iterator
+ * @returns {AsyncIterable<Pair>}
+ */
+function oldLevelIteratorToIterator (li) {
+  return {
+    [Symbol.asyncIterator] () {
+      return {
+        next: () => new Promise((resolve, reject) => {
+          li.next((err, key, value) => {
+            if (err) return reject(err)
+            if (key == null) {
+              return li.end(err => {
+                if (err) return reject(err)
+                resolve({ done: true, value: undefined })
+              })
+            }
+            resolve({ done: false, value: { key: new Key(key, false), value } })
+          })
+        }),
+        return: () => new Promise((resolve, reject) => {
+          li.end(err => {
+            if (err) return reject(err)
+            resolve({ done: true, value: undefined })
+          })
+        })
+      }
+    }
+  }
 }
