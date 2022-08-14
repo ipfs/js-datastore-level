@@ -1,3 +1,10 @@
+## [9.0.1](https://github.com/ipfs/js-datastore-level/compare/v9.0.0...v9.0.1) (2022-08-14)
+
+
+### Bug Fixes
+
+* restore open options and support old level iterators ([#132](https://github.com/ipfs/js-datastore-level/issues/132)) ([78e4911](https://github.com/ipfs/js-datastore-level/commit/78e4911458371740f2c482c7b1907ec6c15d61d9))
+
 ## [9.0.0](https://github.com/ipfs/js-datastore-level/compare/v8.0.0...v9.0.0) (2022-08-12)
 
 
