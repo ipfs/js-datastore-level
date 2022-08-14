@@ -247,7 +247,7 @@ async function * levelIteratorToIterator (li) {
 }
 
 /**
- * @typedef {Object} LevelIterator
+ * @typedef {object} LevelIterator
  * @property {(cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void} next
  * @property {(cb: (err: Error) => void) => void } end
  */
@@ -256,7 +256,7 @@ async function * levelIteratorToIterator (li) {
  * @param {LevelIterator} li - Level iterator
  * @returns {AsyncIterable<Pair>}
  */
- function oldLevelIteratorToIterator (li) {
+function oldLevelIteratorToIterator (li) {
   return {
     [Symbol.asyncIterator] () {
       return {
