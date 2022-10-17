@@ -167,7 +167,7 @@
     "it-filter": "^1.0.2",
     "it-map": "^1.0.5",
     "it-sort": "^1.0.0",
-    "it-take": "^1.0.1",
+    "it-take": "^2.0.0",
     "level": "^8.0.0"
   },
   "devDependencies": {
