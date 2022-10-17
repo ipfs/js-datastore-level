@@ -164,7 +164,7 @@
     "abstract-level": "^1.0.3",
     "datastore-core": "^8.0.1",
     "interface-datastore": "^7.0.0",
-    "it-filter": "^1.0.2",
+    "it-filter": "^2.0.0",
     "it-map": "^1.0.5",
     "it-sort": "^1.0.0",
     "it-take": "^1.0.1",
