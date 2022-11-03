@@ -166,7 +166,7 @@
     "interface-datastore": "^7.0.0",
     "it-filter": "^2.0.0",
     "it-map": "^1.0.5",
-    "it-sort": "^1.0.0",
+    "it-sort": "^2.0.0",
     "it-take": "^2.0.0",
     "level": "^8.0.0"
   },
