@@ -1,3 +1,10 @@
+## [9.0.4](https://github.com/ipfs/js-datastore-level/compare/v9.0.3...v9.0.4) (2022-11-03)
+
+
+### Dependencies
+
+* bump it-map from 1.0.6 to 2.0.0 ([#136](https://github.com/ipfs/js-datastore-level/issues/136)) ([049045a](https://github.com/ipfs/js-datastore-level/commit/049045a4aced05840ec7abce235f3e64c83d42bd))
+
 ## [9.0.3](https://github.com/ipfs/js-datastore-level/compare/v9.0.2...v9.0.3) (2022-11-03)
 
 
