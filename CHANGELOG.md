@@ -1,3 +1,13 @@
+## [9.0.2](https://github.com/ipfs/js-datastore-level/compare/v9.0.1...v9.0.2) (2022-11-03)
+
+
+### Dependencies
+
+* bump it-filter from 1.0.3 to 2.0.0 ([#138](https://github.com/ipfs/js-datastore-level/issues/138)) ([2b13ed0](https://github.com/ipfs/js-datastore-level/commit/2b13ed04723922093cd2a15fff0a04de15a59f69))
+* bump it-take from 1.0.2 to 2.0.0 ([#139](https://github.com/ipfs/js-datastore-level/issues/139)) ([1052cdd](https://github.com/ipfs/js-datastore-level/commit/1052cdd68dbee91d2adfab578b04f741448b22ef))
+* **dev:** bump @ipld/dag-cbor from 7.0.3 to 8.0.0 ([#142](https://github.com/ipfs/js-datastore-level/issues/142)) ([1180956](https://github.com/ipfs/js-datastore-level/commit/11809565db0b80ae307f8ce219402600f9ce5745))
+* **dev:** bump multiformats from 9.9.0 to 10.0.2 ([#141](https://github.com/ipfs/js-datastore-level/issues/141)) ([8db833b](https://github.com/ipfs/js-datastore-level/commit/8db833bc97122334bb21bd3de6b52018b4c3e816))
+
 ## [9.0.1](https://github.com/ipfs/js-datastore-level/compare/v9.0.0...v9.0.1) (2022-08-14)
 
 
