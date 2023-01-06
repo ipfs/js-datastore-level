@@ -171,7 +171,7 @@
     "level": "^8.0.0"
   },
   "devDependencies": {
-    "@ipld/dag-cbor": "^8.0.0",
+    "@ipld/dag-cbor": "^9.0.0",
     "@types/rimraf": "^3.0.2",
     "aegir": "^37.5.1",
     "interface-datastore-tests": "^3.0.0",
