@@ -173,7 +173,7 @@
   "devDependencies": {
     "@ipld/dag-cbor": "^8.0.0",
     "@types/rimraf": "^3.0.2",
-    "aegir": "^37.5.1",
+    "aegir": "^38.1.4",
     "interface-datastore-tests": "^3.0.0",
     "ipfs-utils": "^9.0.4",
     "level-mem": "^6.0.1",
