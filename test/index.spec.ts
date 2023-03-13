@@ -18,6 +18,7 @@ describe('LevelDatastore', () => {
 
     it('should be able to override the database', async () => {
       const levelStore = new LevelDatastore(
+        // @ts-expect-error MemoryLevel does not implement the same interface as Level
         new MemoryLevel({
           keyEncoding: 'utf8',
           valueEncoding: 'view'
@@ -33,6 +34,7 @@ describe('LevelDatastore', () => {
   describe('interface-datastore MemoryLevel', () => {
     interfaceDatastoreTests({
       setup: () => new LevelDatastore(
+        // @ts-expect-error MemoryLevel does not implement the same interface as Level
         new MemoryLevel({
           keyEncoding: 'utf8',
           valueEncoding: 'view'

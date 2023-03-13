@@ -1,33 +1,35 @@
-import { Key } from 'interface-datastore'
+import { Batch, Key, KeyQuery, Pair, Query } from 'interface-datastore'
 import { BaseDatastore, Errors } from 'datastore-core'
 import filter from 'it-filter'
 import map from 'it-map'
 import take from 'it-take'
 import sort from 'it-sort'
 import { Level } from 'level'
+import type { DatabaseOptions, OpenOptions, IteratorOptions } from 'level'
 
-/**
- * @typedef {import('interface-datastore').Datastore} Datastore
- * @typedef {import('interface-datastore').Pair} Pair
- * @typedef {import('interface-datastore').Batch} Batch
- * @typedef {import('interface-datastore').Query} Query
- * @typedef {import('interface-datastore').KeyQuery} KeyQuery
- * @typedef {import('interface-datastore').Options} QueryOptions
- * @typedef {import('abstract-level').AbstractLevel<any, string, Uint8Array>} LevelDb
- */
+interface BatchPut {
+  type: 'put'
+  key: string
+  value: Uint8Array
+}
+
+interface BatchDel {
+  type: 'del'
+  key: string
+}
+
+type BatchOp = BatchPut | BatchDel
 
 /**
  * A datastore backed by leveldb
  */
 export class LevelDatastore extends BaseDatastore {
-  /**
-   * @param {string | LevelDb} path
-   * @param {import('level').DatabaseOptions<string, Uint8Array> & import('level').OpenOptions} [opts]
-   */
-  constructor (path, opts = {}) {
+  public db: Level<string, Uint8Array>
+  private opts: OpenOptions
+
+  constructor (path: string | Level<string, Uint8Array>, opts: DatabaseOptions<string, Uint8Array> & OpenOptions = {}) {
     super()
 
-    /** @type {LevelDb} */
     this.db = typeof path === 'string'
       ? new Level(path, {
         ...opts,
@@ -36,7 +38,6 @@ export class LevelDatastore extends BaseDatastore {
       })
       : path
 
-    /** @type {import('level').OpenOptions} */
     this.opts = {
       createIfMissing: true,
       compression: false, // same default as go
@@ -47,74 +48,55 @@ export class LevelDatastore extends BaseDatastore {
   async open () {
     try {
       await this.db.open(this.opts)
-    } catch (/** @type {any} */ err) {
+    } catch (err: any) {
       throw Errors.dbOpenFailedError(err)
     }
   }
 
-  /**
-   * @param {Key} key
-   * @param {Uint8Array} value
-   */
-  async put (key, value) {
+  async put (key: Key, value: Uint8Array): Promise<void> {
     try {
       await this.db.put(key.toString(), value)
-    } catch (/** @type {any} */ err) {
+    } catch (err: any) {
       throw Errors.dbWriteFailedError(err)
     }
   }
 
-  /**
-   * @param {Key} key
-   * @returns {Promise<Uint8Array>}
-   */
-  async get (key) {
+  async get (key: Key): Promise<Uint8Array> {
     let data
     try {
       data = await this.db.get(key.toString())
-    } catch (/** @type {any} */ err) {
+    } catch (err: any) {
       if (err.notFound) throw Errors.notFoundError(err)
       throw Errors.dbWriteFailedError(err)
     }
     return data
   }
 
-  /**
-   * @param {Key} key
-   * @returns {Promise<boolean>}
-   */
-  async has (key) {
+  async has (key: Key): Promise<boolean> {
     try {
       await this.db.get(key.toString())
-    } catch (/** @type {any} */ err) {
+    } catch (err: any) {
       if (err.notFound) return false
       throw err
     }
     return true
   }
 
-  /**
-   * @param {Key} key
-   * @returns {Promise<void>}
-   */
-  async delete (key) {
+  async delete (key: Key): Promise<void> {
     try {
       await this.db.del(key.toString())
-    } catch (/** @type {any} */ err) {
+    } catch (err: any) {
       throw Errors.dbDeleteFailedError(err)
     }
   }
 
-  close () {
-    return this.db && this.db.close()
+  async close (): Promise<void> {
+    return await this.db && this.db.close()
   }
 
-  /**
-   * @returns {Batch}
-   */
-  batch () {
-    /** @type {Array<{ type: 'put', key: string, value: Uint8Array; } | { type: 'del', key: string }>} */
-    const ops = []
+  batch (): Batch {
+    const ops: BatchOp[] = []
+
     return {
       put: (key, value) => {
         ops.push({
@@ -130,15 +112,16 @@ export class LevelDatastore extends BaseDatastore {
         })
       },
       commit: () => {
+        if (this.db.batch == null) {
+          throw new Error('Batch operations unsupported by underlying Level')
+        }
+
         return this.db.batch(ops)
       }
     }
   }
 
-  /**
-   * @param {Query} q
-   */
-  query (q) {
+  query (q: Query): AsyncIterable<Pair> {
     let it = this._query({
       values: true,
       prefix: q.prefix
@@ -165,10 +148,7 @@ export class LevelDatastore extends BaseDatastore {
     return it
   }
 
-  /**
-   * @param {KeyQuery} q
-   */
-  queryKeys (q) {
+  queryKeys (q: KeyQuery): AsyncIterable<Key> {
     let it = map(this._query({
       values: false,
       prefix: q.prefix
@@ -195,15 +175,8 @@ export class LevelDatastore extends BaseDatastore {
     return it
   }
 
-  /**
-   * @param {object} opts
-   * @param {boolean} opts.values
-   * @param {string} [opts.prefix]
-   * @returns {AsyncIterable<Pair>}
-   */
-  _query (opts) {
-    /** @type {import('level').IteratorOptions<string, Uint8Array>} */
-    const iteratorOpts = {
+  _query (opts: { values: boolean, prefix?: string }): AsyncIterable<Pair> {
+    const iteratorOpts: IteratorOptions<string, Uint8Array> = {
       keys: true,
       keyEncoding: 'buffer',
       values: opts.values
@@ -234,11 +207,7 @@ export class LevelDatastore extends BaseDatastore {
   }
 }
 
-/**
- * @param {import('level').Iterator<LevelDb, string, Uint8Array>} li - Level iterator
- * @returns {AsyncIterable<Pair>}
- */
-async function * levelIteratorToIterator (li) {
+async function * levelIteratorToIterator (li: AsyncIterable<[string, Uint8Array]> & { close: () => Promise<void> }): AsyncIterable<Pair> {
   for await (const [key, value] of li) {
     yield { key: new Key(key, false), value }
   }
@@ -246,17 +215,12 @@ async function * levelIteratorToIterator (li) {
   await li.close()
 }
 
-/**
- * @typedef {object} LevelIterator
- * @property {(cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void} next
- * @property {(cb: (err: Error) => void) => void } end
- */
+interface OldLevelIterator {
+  next: (cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void
+  end: (cb: (err: Error) => void) => void
+}
 
-/**
- * @param {LevelIterator} li - Level iterator
- * @returns {AsyncIterable<Pair>}
- */
-function oldLevelIteratorToIterator (li) {
+function oldLevelIteratorToIterator (li: OldLevelIterator): AsyncIterable<Pair> {
   return {
     [Symbol.asyncIterator] () {
       return {
