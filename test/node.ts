@@ -3,12 +3,7 @@
 import { expect } from 'aegir/chai'
 import path from 'path'
 import { Key } from 'interface-datastore/key'
-import rimraf from 'rimraf'
 import { MountDatastore } from 'datastore-core'
-import { CID } from 'multiformats/cid'
-import * as Digest from 'multiformats/hashes/digest'
-import * as dagCbor from '@ipld/dag-cbor'
-import { promisify } from 'util'
 import childProcess from 'child_process'
 import { interfaceDatastoreTests } from 'interface-datastore-tests'
 import { LevelDatastore } from '../src/index.js'
@@ -16,50 +11,38 @@ import tempdir from 'ipfs-utils/src/temp-dir.js'
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
-    const dir = tempdir()
     interfaceDatastoreTests({
-      setup: () => new LevelDatastore(dir),
-      teardown: () => promisify(rimraf)(dir)
+      async setup () {
+        const store = new LevelDatastore(tempdir())
+        await store.open()
+
+        return store
+      },
+      teardown () {}
     })
   })
 
   describe('interface-datastore (mount(leveldown, leveldown, leveldown))', () => {
-    const dirs = [
-      tempdir(),
-      tempdir(),
-      tempdir()
-    ]
-
     interfaceDatastoreTests({
-      setup () {
-        return new MountDatastore([{
-          prefix: new Key('/a'),
-          datastore: new LevelDatastore(dirs[0])
-        }, {
-          prefix: new Key('/q'),
-          datastore: new LevelDatastore(dirs[1])
-        }, {
-          prefix: new Key('/z'),
-          datastore: new LevelDatastore(dirs[2])
-        }])
+      async setup () {
+        return new MountDatastore(
+          await Promise.all(
+            ['/a', '/q', '/z'].map(async prefix => {
+              const datastore = new LevelDatastore(tempdir())
+              await datastore.open()
+
+              return {
+                prefix: new Key(prefix),
+                datastore
+              }
+            })
+          )
+        )
       },
-      teardown () {
-        return Promise.all(dirs.map(dir => promisify(rimraf)(dir)))
+      async teardown () {
+
       }
     })
-  })
-
-  it.skip('interop with go', async () => {
-    const store = new LevelDatastore(path.join(__dirname, 'test-repo', 'datastore'))
-
-    const cids = []
-
-    for await (const e of store.query({})) {
-      cids.push(CID.createV1(dagCbor.code, Digest.decode(e.key.uint8Array())))
-    }
-
-    expect(cids[0].version).to.be.eql(0)
-    expect(cids).to.have.length(4)
   })
 
   // The `.end()` method MUST be called on LevelDB iterators or they remain open,
@@ -78,12 +61,12 @@ describe('LevelDatastore', () => {
   //
   // https://github.com/Level/leveldown/blob/d3453fbde4d2a8aa04d9091101c25c999649069b/binding.cc#L545
   it('should not leave iterators open and leak memory', (done) => {
-    const cp = childProcess.fork(path.join(process.cwd(), '/test/fixtures/test-level-iterator-destroy'), { stdio: 'pipe' })
+    const cp = childProcess.fork(path.join(process.cwd(), '/dist/test/fixtures/test-level-iterator-destroy'), { stdio: 'pipe' })
 
     let out = ''
     const { stdout, stderr } = cp
-    stdout && stdout.on('data', d => { out += d })
-    stderr && stderr.on('data', d => { out += d })
+    stdout?.on('data', d => { out = `${out}${d}` })
+    stderr?.on('data', d => { out = `${out}${d}` })
 
     cp.on('exit', code => {
       expect(code).to.equal(0)

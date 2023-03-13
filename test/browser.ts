@@ -8,7 +8,7 @@ import { interfaceDatastoreTests } from 'interface-datastore-tests'
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveljs)', () => {
     interfaceDatastoreTests({
-      setup: () => new LevelDatastore('hello-' + Math.random()),
+      setup: () => new LevelDatastore(`hello-${Math.random()}`),
       teardown: () => {}
     })
   })
@@ -18,13 +18,13 @@ describe('LevelDatastore', () => {
       setup () {
         return new MountDatastore([{
           prefix: new Key('/a'),
-          datastore: new LevelDatastore('one-' + Math.random())
+          datastore: new LevelDatastore(`one-${Math.random()}`)
         }, {
           prefix: new Key('/q'),
-          datastore: new LevelDatastore('two-' + Math.random())
+          datastore: new LevelDatastore(`two-${Math.random()}`)
         }, {
           prefix: new Key('/z'),
-          datastore: new LevelDatastore('three-' + Math.random())
+          datastore: new LevelDatastore(`three-${Math.random()}`)
         }])
       },
       teardown () {}

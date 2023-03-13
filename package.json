@@ -52,7 +52,7 @@
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
-      "import": "./src/index.js"
+      "import": "./dist/src/index.js"
     }
   },
   "eslintConfig": {
@@ -161,9 +161,8 @@
     "dep-check": "aegir dep-check"
   },
   "dependencies": {
-    "abstract-level": "^1.0.3",
-    "datastore-core": "^8.0.1",
-    "interface-datastore": "^7.0.0",
+    "datastore-core": "^9.0.1",
+    "interface-datastore": "^8.0.0",
     "it-filter": "^2.0.0",
     "it-map": "^2.0.0",
     "it-sort": "^2.0.0",
@@ -171,14 +170,9 @@
     "level": "^8.0.0"
   },
   "devDependencies": {
-    "@ipld/dag-cbor": "^8.0.0",
-    "@types/rimraf": "^3.0.2",
-    "aegir": "^37.5.1",
-    "interface-datastore-tests": "^3.0.0",
+    "aegir": "^38.1.7",
+    "interface-datastore-tests": "^4.0.0",
     "ipfs-utils": "^9.0.4",
-    "level-mem": "^6.0.1",
-    "memory-level": "^1.0.0",
-    "multiformats": "^10.0.2",
-    "rimraf": "^3.0.2"
+    "memory-level": "^1.0.0"
   }
 }
