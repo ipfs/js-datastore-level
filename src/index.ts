@@ -25,7 +25,7 @@ type BatchOp = BatchPut | BatchDel
  */
 export class LevelDatastore extends BaseDatastore {
   public db: Level<string, Uint8Array>
-  private opts: OpenOptions
+  private readonly opts: OpenOptions
 
   constructor (path: string | Level<string, Uint8Array>, opts: DatabaseOptions<string, Uint8Array> & OpenOptions = {}) {
     super()
@@ -45,7 +45,7 @@ export class LevelDatastore extends BaseDatastore {
     }
   }
 
-  async open () {
+  async open (): Promise<void> {
     try {
       await this.db.open(this.opts)
     } catch (err: any) {
@@ -66,7 +66,10 @@ export class LevelDatastore extends BaseDatastore {
     try {
       data = await this.db.get(key.toString())
     } catch (err: any) {
-      if (err.notFound) throw Errors.notFoundError(err)
+      if (err.notFound != null) {
+        throw Errors.notFoundError(err)
+      }
+
       throw Errors.dbWriteFailedError(err)
     }
     return data
@@ -76,7 +79,10 @@ export class LevelDatastore extends BaseDatastore {
     try {
       await this.db.get(key.toString())
     } catch (err: any) {
-      if (err.notFound) return false
+      if (err.notFound != null) {
+        return false
+      }
+
       throw err
     }
     return true
@@ -91,7 +97,7 @@ export class LevelDatastore extends BaseDatastore {
   }
 
   async close (): Promise<void> {
-    return await this.db && this.db.close()
+    await this.db.close()
   }
 
   batch (): Batch {
@@ -102,7 +108,7 @@ export class LevelDatastore extends BaseDatastore {
         ops.push({
           type: 'put',
           key: key.toString(),
-          value: value
+          value
         })
       },
       delete: (key) => {
@@ -111,12 +117,12 @@ export class LevelDatastore extends BaseDatastore {
           key: key.toString()
         })
       },
-      commit: () => {
+      commit: async () => {
         if (this.db.batch == null) {
           throw new Error('Batch operations unsupported by underlying Level')
         }
 
-        return this.db.batch(ops)
+        await this.db.batch(ops)
       }
     }
   }
@@ -136,12 +142,12 @@ export class LevelDatastore extends BaseDatastore {
     }
 
     const { offset, limit } = q
-    if (offset) {
+    if (offset != null) {
       let i = 0
       it = filter(it, () => i++ >= offset)
     }
 
-    if (limit) {
+    if (limit != null) {
       it = take(it, limit)
     }
 
@@ -163,12 +169,12 @@ export class LevelDatastore extends BaseDatastore {
     }
 
     const { offset, limit } = q
-    if (offset) {
+    if (offset != null) {
       let i = 0
       it = filter(it, () => i++ >= offset)
     }
 
-    if (limit) {
+    if (limit != null) {
       it = take(it, limit)
     }
 
@@ -193,7 +199,7 @@ export class LevelDatastore extends BaseDatastore {
 
     const iterator = this.db.iterator(iteratorOpts)
 
-    if (iterator[Symbol.asyncIterator]) {
+    if (iterator[Symbol.asyncIterator] != null) {
       return levelIteratorToIterator(iterator)
     }
 
@@ -216,7 +222,7 @@ async function * levelIteratorToIterator (li: AsyncIterable<[string, Uint8Array]
 }
 
 interface OldLevelIterator {
-  next: (cb: (err: Error, key: string | Uint8Array | null, value: any)=> void)=>void
+  next: (cb: (err: Error, key: string | Uint8Array | null, value: any) => void) => void
   end: (cb: (err: Error) => void) => void
 }
 
@@ -224,21 +230,28 @@ function oldLevelIteratorToIterator (li: OldLevelIterator): AsyncIterable<Pair> 
   return {
     [Symbol.asyncIterator] () {
       return {
-        next: () => new Promise((resolve, reject) => {
+        next: async () => await new Promise((resolve, reject) => {
           li.next((err, key, value) => {
-            if (err) return reject(err)
+            if (err != null) {
+              reject(err); return
+            }
             if (key == null) {
-              return li.end(err => {
-                if (err) return reject(err)
+              li.end(err => {
+                if (err != null) {
+                  reject(err)
+                  return
+                }
                 resolve({ done: true, value: undefined })
-              })
+              }); return
             }
             resolve({ done: false, value: { key: new Key(key, false), value } })
           })
         }),
-        return: () => new Promise((resolve, reject) => {
+        return: async () => await new Promise((resolve, reject) => {
           li.end(err => {
-            if (err) return reject(err)
+            if (err != null) {
+              reject(err); return
+            }
             resolve({ done: true, value: undefined })
           })
         })

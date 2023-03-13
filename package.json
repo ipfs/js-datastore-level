@@ -161,7 +161,6 @@
     "dep-check": "aegir dep-check"
   },
   "dependencies": {
-    "abstract-level": "^1.0.3",
     "datastore-core": "^9.0.1",
     "interface-datastore": "^8.0.0",
     "it-filter": "^2.0.0",
@@ -171,12 +170,9 @@
     "level": "^8.0.0"
   },
   "devDependencies": {
-    "@ipld/dag-cbor": "^9.0.0",
     "aegir": "^38.1.7",
     "interface-datastore-tests": "^4.0.0",
     "ipfs-utils": "^9.0.4",
-    "level-mem": "^6.0.1",
-    "memory-level": "^1.0.0",
-    "multiformats": "^11.0.2"
+    "memory-level": "^1.0.0"
   }
 }

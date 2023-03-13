@@ -74,8 +74,8 @@ describe('LevelDatastore', () => {
 
     let out = ''
     const { stdout, stderr } = cp
-    stdout && stdout.on('data', d => { out += d })
-    stderr && stderr.on('data', d => { out += d })
+    stdout?.on('data', d => { out = `${out}${d}` })
+    stderr?.on('data', d => { out = `${out}${d}` })
 
     cp.on('exit', code => {
       expect(code).to.equal(0)
