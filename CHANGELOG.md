@@ -1,3 +1,14 @@
+## [10.0.0](https://github.com/ipfs/js-datastore-level/compare/v9.0.4...v10.0.0) (2023-03-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* this module now implements interface-datastore@8.x.x
+
+### Dependencies
+
+* update to interface-datastore 8.x.x ([#172](https://github.com/ipfs/js-datastore-level/issues/172)) ([178d235](https://github.com/ipfs/js-datastore-level/commit/178d235254805f2abdd919e0860bd86af5b48582))
+
 ## [9.0.4](https://github.com/ipfs/js-datastore-level/compare/v9.0.3...v9.0.4) (2022-11-03)
 
 
