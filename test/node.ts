@@ -8,7 +8,6 @@ import childProcess from 'child_process'
 import { interfaceDatastoreTests } from 'interface-datastore-tests'
 import { LevelDatastore } from '../src/index.js'
 import tempdir from 'ipfs-utils/src/temp-dir.js'
-import fs from 'node:fs/promises'
 
 describe('LevelDatastore', () => {
   describe('interface-datastore (leveldown)', () => {
@@ -19,15 +18,7 @@ describe('LevelDatastore', () => {
 
         return store
       },
-      async teardown (store) {
-        if (store.db.location == null) {
-          return
-        }
-
-        await fs.rm(store.db.location, {
-          recursive: true
-        })
-      }
+      teardown () {}
     })
   })
 
