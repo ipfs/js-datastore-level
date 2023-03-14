@@ -1,3 +1,10 @@
+## [10.0.1](https://github.com/ipfs/js-datastore-level/compare/v10.0.0...v10.0.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* update project config ([#173](https://github.com/ipfs/js-datastore-level/issues/173)) ([57a69c7](https://github.com/ipfs/js-datastore-level/commit/57a69c79324cecd5966000e65b4734997c183c17))
+
 ## [10.0.0](https://github.com/ipfs/js-datastore-level/compare/v9.0.4...v10.0.0) (2023-03-13)
 
 
