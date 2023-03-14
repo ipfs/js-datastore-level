@@ -10,7 +10,7 @@ import { interfaceDatastoreTests } from 'interface-datastore-tests'
 describe('LevelDatastore', () => {
   describe('initialization', () => {
     it('should default to a leveldown database', async () => {
-      const levelStore = new LevelDatastore('init-default')
+      const levelStore = new LevelDatastore(`${tempdir()}/init-default-${Date.now()}`)
       await levelStore.open()
 
       expect(levelStore.db).to.be.an.instanceOf(Level)
