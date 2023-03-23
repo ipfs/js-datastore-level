@@ -53,9 +53,11 @@ export class LevelDatastore extends BaseDatastore {
     }
   }
 
-  async put (key: Key, value: Uint8Array): Promise<void> {
+  async put (key: Key, value: Uint8Array): Promise<Key> {
     try {
       await this.db.put(key.toString(), value)
+
+      return key
     } catch (err: any) {
       throw Errors.dbWriteFailedError(err)
     }
